@@ -1,4 +1,5 @@
 """YTO desktop presentation; camera and business logic live in their own modules."""
+import sys
 import tkinter as tk
 from tkinter import ttk
 import cv2
@@ -11,10 +12,11 @@ TEXT='#202035'
 MUTED='#7b7f95'
 ACCENT='#7044d6'
 BORDER='#e7e8f0'
+FONT = 'PingFang SC' if sys.platform == 'darwin' else 'Microsoft YaHei UI'
 
 
 def build_ui(self, modes):
-    font='Microsoft YaHei UI'
+    font=FONT
     style=ttk.Style(self.root)
     style.theme_use('clam')
     style.configure('YTO.TButton',font=(font,10),padding=(10,8),background='#f1edfb',

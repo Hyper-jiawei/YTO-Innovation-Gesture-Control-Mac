@@ -13,4 +13,4 @@ if __name__=='__main__':
     device=cuda_device()
     if device=='cpu': raise RuntimeError('GPU 尚未验证通过；先运行 check_environment.py')
     YOLO(str(a.weights)).train(data=str(a.data.resolve()),epochs=a.epochs,imgsz=640,batch=4,
-        device=0,workers=0,project=str(bootstrap.ROOT/'outputs/detector_training'),name='parcel')
+        device=device,workers=0,project=str(bootstrap.ROOT/'outputs/detector_training'),name='parcel')

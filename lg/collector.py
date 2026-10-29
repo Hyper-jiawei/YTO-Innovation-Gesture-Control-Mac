@@ -11,7 +11,7 @@ from PIL import Image, ImageTk
 from .data import sample_counts, save_snapshot
 from .vision import Hands, open_camera, draw
 from .demo import scene, observations
-from .ui import BG, CARD, TEXT, MUTED, ACCENT, BORDER
+from .ui import BG, CARD, TEXT, MUTED, ACCENT, BORDER, FONT
 from .labels import LABELS, LOVE_LABEL, canonical_label,ACTIVE_DATASET
 
 
@@ -90,7 +90,7 @@ class CollectorApp:
             self.root.after(int(args.smoke*1000),self.close)
 
     def make_ui(self):
-        font='Microsoft YaHei UI'
+        font=FONT
         style=ttk.Style(self.root)
         style.theme_use('clam')
         style.configure('Capture.TButton',font=(font,12,'bold'),padding=14,
@@ -216,34 +216,34 @@ class CollectorApp:
         dialog.protocol('WM_DELETE_WINDOW',self.cancel_capture)
         wrap=tk.Frame(dialog,bg=CARD,padx=22,pady=18)
         wrap.pack(fill='both',expand=True)
-        tk.Label(wrap,text='给当前画面标注',bg=CARD,fg=TEXT,font=('Microsoft YaHei UI',16,'bold')).pack(anchor='w')
-        tk.Label(wrap,text=f'操作员 {self.capture.operator} · 轮次 {self.capture.session}',bg=CARD,fg=MUTED,font=('Microsoft YaHei UI',9)).pack(anchor='w',pady=(4,10))
+        tk.Label(wrap,text='给当前画面标注',bg=CARD,fg=TEXT,font=(FONT,16,'bold')).pack(anchor='w')
+        tk.Label(wrap,text=f'操作员 {self.capture.operator} · 轮次 {self.capture.session}',bg=CARD,fg=MUTED,font=(FONT,9)).pack(anchor='w',pady=(4,10))
         preview=tk.Label(wrap,bg='#121522')
         preview.pack(fill='x')
         self.show_frame(preview,draw(self.frozen_frame,self.capture.frozen),max_size=(440,220))
         self.label_var=tk.StringVar(value=self.label)
         self.hand_var=tk.StringVar(value=self.hand or '')
-        tk.Label(wrap,text='1. 选择手势（9 = 握拳）',bg=CARD,fg=TEXT,font=('Microsoft YaHei UI',11,'bold')).pack(anchor='w',pady=(14,6))
+        tk.Label(wrap,text='1. 选择手势（9 = 握拳）',bg=CARD,fg=TEXT,font=(FONT,11,'bold')).pack(anchor='w',pady=(14,6))
         digits=tk.Frame(wrap,bg=CARD); digits.pack(fill='x')
         self.label_buttons={}
         for i,label in enumerate(LABELS):
             button=tk.Button(digits,text=label,
                 command=lambda v=label:self.choose_label(v),relief='flat',bd=0,pady=8,
-                font=('Microsoft YaHei UI',11),cursor='hand2')
+                font=(FONT,11),cursor='hand2')
             row,column,span=(2,0,3) if label==LOVE_LABEL else ((2,3,2) if label=='ok' else (i//5,i%5,1))
             button.grid(row=row,column=column,columnspan=span,sticky='ew',padx=3,pady=3)
             digits.columnconfigure(i%5,weight=1)
             self.label_buttons[label]=button
-        tk.Label(wrap,text='2. 选择人的实际左手 / 右手',bg=CARD,fg=TEXT,font=('Microsoft YaHei UI',11,'bold')).pack(anchor='w',pady=(12,6))
+        tk.Label(wrap,text='2. 选择人的实际左手 / 右手',bg=CARD,fg=TEXT,font=(FONT,11,'bold')).pack(anchor='w',pady=(12,6))
         hand_row=tk.Frame(wrap,bg=CARD); hand_row.pack(fill='x')
         self.hand_buttons={}
         for i,(value,label) in enumerate([('left','左手'),('right','右手')]):
             button=tk.Button(hand_row,text=label,command=lambda v=value:self.choose_hand(v),
-                             relief='flat',bd=0,pady=10,font=('Microsoft YaHei UI',11),cursor='hand2')
+                             relief='flat',bd=0,pady=10,font=(FONT,11),cursor='hand2')
             button.grid(row=0,column=i,sticky='ew',padx=3); hand_row.columnconfigure(i,weight=1)
             self.hand_buttons[value]=button
         self.dialog_feedback=tk.Label(wrap,text='请确认数字和实际左右手，保存后自动继续下一轮',bg=CARD,fg=MUTED,
-                                      wraplength=440,font=('Microsoft YaHei UI',9))
+                                      wraplength=440,font=(FONT,9))
         self.dialog_feedback.pack(pady=12)
         ttk.Button(wrap,text='保存样本，继续采集',style='Capture.TButton',command=self.save_capture).pack(fill='x')
         ttk.Button(wrap,text='取消，重新摆手势',style='Secondary.TButton',command=self.cancel_capture).pack(fill='x',pady=(8,0))

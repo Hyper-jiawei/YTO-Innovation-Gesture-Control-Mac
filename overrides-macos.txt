@@ -1,0 +1,2 @@
+# MediaPipe requires contrib, which also supplies cv2. Avoid two cv2 wheels.
+opencv-python ; sys_platform == 'win32'

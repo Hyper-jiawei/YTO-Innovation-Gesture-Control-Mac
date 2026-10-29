@@ -1,5 +1,8 @@
 """Camera, MediaPipe landmarks, optional trained classifier and YOLO refinement."""
 import time
+import sys
+import os
+from functools import lru_cache
 from pathlib import Path
 import cv2
 import numpy as np
@@ -11,15 +14,30 @@ CONNECTIONS = [(0,1),(1,2),(2,3),(3,4),(0,5),(5,6),(6,7),(7,8),
                (15,16),(13,17),(0,17),(17,18),(18,19),(19,20)]
 
 
+@lru_cache(maxsize=1)
 def cuda_device():
-    try:
-        import torch
-        if torch.cuda.is_available():
-            x = torch.ones((32,32), device='cuda')
-            _ = (x@x).sum().item()  # actual kernel, not just driver discovery
-            return 'cuda:0'
-    except (ImportError, RuntimeError, AssertionError, OSError):
-        pass
+    """Select a verified CUDA/Metal device, or CPU; retain the legacy API."""
+    import torch
+    requested = os.environ.get('YTO_DEVICE', 'auto').lower()
+    if requested not in ('auto', 'cpu', 'mps', 'cuda:0'):
+        raise ValueError('YTO_DEVICE must be auto, cpu, mps or cuda:0')
+    candidates = ['cuda:0', 'mps'] if requested == 'auto' else [requested]
+    for device in candidates:
+        if device == 'cpu':
+            return device
+        if device == 'cuda:0' and not torch.cuda.is_available():
+            continue
+        if device == 'mps' and not torch.backends.mps.is_available():
+            continue
+        try:
+            x = torch.ones((32, 32), device=device)
+            _ = (x @ x).sum().item()
+            return device
+        except (RuntimeError, AssertionError, OSError):
+            if requested != 'auto':
+                raise
+    if requested != 'auto':
+        raise RuntimeError(f'Requested device is unavailable: {requested}')
     return 'cpu'
 
 
@@ -110,9 +128,11 @@ def open_camera(source,width=1920,height=1080):
         candidates = [str(source)]
     for index in candidates:
         for configure in ([True,False] if isinstance(index,int) else [False]):
-            cap = cv2.VideoCapture(index, cv2.CAP_DSHOW) if isinstance(index,int) else cv2.VideoCapture(index)
+            backend = cv2.CAP_AVFOUNDATION if sys.platform == 'darwin' else (cv2.CAP_DSHOW if sys.platform == 'win32' else cv2.CAP_ANY)
+            cap = cv2.VideoCapture(index, backend) if isinstance(index,int) else cv2.VideoCapture(index)
             if configure:
-                cap.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*'MJPG'))
+                if sys.platform == 'win32':
+                    cap.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*'MJPG'))
                 cap.set(cv2.CAP_PROP_FRAME_WIDTH,width)
                 cap.set(cv2.CAP_PROP_FRAME_HEIGHT,height)
                 cap.set(cv2.CAP_PROP_FPS,30)
@@ -121,7 +141,19 @@ def open_camera(source,width=1920,height=1080):
                 cap.set(cv2.CAP_PROP_BUFFERSIZE,1)
                 return cap, frame, index
             cap.release()
-    raise RuntimeError(f'无法读取摄像头/视频 {source}；关闭占用摄像头的程序，或用 --camera 0/1 指定设备。')
+    raise RuntimeError(f'无法读取摄像头/视频 {source}；在系统设置 → 隐私与安全性 → 摄像头中允许终端/Python访问，关闭占用相机的程序，或用 --camera 0/1 指定设备。')
+
+
+def prepare_camera(source, width=1280, height=720):
+    """macOS must run the first camera permission request on the main thread.
+
+    Open/release before starting the capture worker; AVFoundation then has a
+    granted authorization state when the worker opens its own capture session.
+    Local video files and other platforms need no permission preflight.
+    """
+    if sys.platform == 'darwin' and (str(source).isdigit() or source == 'auto'):
+        cap, _, _ = open_camera(source, width, height)
+        cap.release()
 
 
 def crop(frame, roi):

@@ -25,7 +25,15 @@ def check():
             report['cuda_backward']=True
         else: report['cuda_backward']=False
     except Exception as e: report['torch_error']=repr(e)
-    report['mediapipe_backend']='CPU: Windows Python Tasks; independent of PyTorch CUDA'
+    from lg.vision import cuda_device
+    report['selected_device'] = cuda_device()
+    report['mps_available'] = torch.backends.mps.is_available()
+    if report['mps_available']:
+        layer = torch.nn.Linear(63, 11).to('mps')
+        result = layer(torch.randn(32, 63, device='mps')).sum()
+        result.backward()
+        report['mps_forward_backward'] = bool(torch.isfinite(result).item())
+    report['mediapipe_backend']='CPU: MediaPipe Tasks; independent of PyTorch CUDA/Metal'
     print(json.dumps(report,ensure_ascii=False,indent=2))
     out=bootstrap.ROOT/'outputs/environment.json'
     out.parent.mkdir(exist_ok=True)

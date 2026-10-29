@@ -125,7 +125,7 @@ flowchart LR
 | 左右手处理 | 左右手分开采集标记、共享分类模型 | 覆盖手背方向差异，避免只适配单手 |
 | 稳定选择 | IoU关联、指尖二维坐标、位置容差、停留状态机 | 容忍轻微抖动，减少瞬间动作误触发 |
 | 时序判断 | 连续握拳计时、双次OK状态机；独立动作模块识别展开→捏合/握拳→展开 | 区分单帧姿态与有起止的动作 |
-| 物品识别 | Ultralytics YOLO12n，CUDA推理 | 对框选物体给出类别、置信度和边界框 |
+| 物品识别 | Ultralytics YOLO12n，Mac Metal/MPS / Windows CUDA推理 | 对框选物体给出类别、置信度和边界框 |
 | 条码解码 | ZXing、多种预处理与有限多帧重试 | 提高指定区域条码的读取机会 |
 | 工作站交互 | Tkinter、摄像头线程、最新帧队列和检测缓存 | 统一界面，减少后台任务阻塞预览 |
 
@@ -197,30 +197,43 @@ flowchart LR
 
 ## 快速开始
 
-### 环境与模型
+### Mac M1 环境与模型
 
-建议Windows、Python3.10、可用摄像头；CUDA加速使用匹配驱动与GPU版PyTorch。仓库包含当前手势权重、MediaPipe任务文件与YOLO12n权重，原始照片、关键点样本、业务日志和本地依赖不公开上传。
+本仓库为 [Windows 原版](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control) 的 Mac Apple Silicon 适配版本，项目功能、模型、五类演示与业务规则保持一致。推荐 macOS 14 及以上、Apple M1、8 GB 或以上内存、Python 3.11 和可用摄像头。MediaPipe关键点使用CPU，PyTorch手势分类及YOLO使用验证可用的Metal/MPS；无可用加速设备时回退CPU。
 
-```powershell
-git clone https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control.git
-cd YTO-Innovation-Gesture-Control
-conda create -n mediapipe python=3.10 -y
-conda activate mediapipe
-python -m pip install -r requirements-base.txt
-# RTX5060测试组合：PyTorch 2.7.1 + CUDA 12.8
-python -m pip install torch==2.7.1 torchvision==0.22.1 --index-url https://download.pytorch.org/whl/cu128
-python -m pip install -r requirements-extras.txt
-python check_environment.py
-python main.py --camera 1
+仓库包含当前手势权重、MediaPipe任务文件与YOLO12n权重，原始照片、关键点样本、业务日志和本地依赖不公开上传。
+
+```zsh
+git clone https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac.git
+cd YTO-Innovation-Gesture-Control-Mac
+# 首次安装需要 Apple Command Line Tools；未安装时执行并完成系统安装：
+xcode-select --install
+# 已安装 Command Line Tools 时，直接执行：
+./setup_macos.command
+./start.command
 ```
 
-默认摄像头为1；设备不同可用 `--camera 0` 或 `--camera auto`。可先运行 `python main.py --demo` 查看合成输入演示；采集器为 `python collect_digits.py --camera 1`。详细安装说明见[部署指南](docs/DEPLOYMENT.md)。
+`setup_macos.command` 在工程内下载原生ARM64 Python 3.11、创建独立 `.venv`、安装锁定依赖并构建本地Mac启动器。首次安装需要联网；后续启动无需激活环境。已安装Command Line Tools时不必重复安装。
 
-原开发环境可继续使用 `./start.ps1`。PowerShell辅助脚本沿用原开发机Conda路径，其他电脑优先使用上面的Python命令，或按部署指南修改解释器路径。
+也可在访达双击 `YTO手势控制.app` 或 `start.command` 启动；双击 `demo.command` 查看合成输入演示。首次使用请在系统相机权限提示中选择允许。Mac默认摄像头为0，请求1280×720；外接设备可用 `./start.command --camera 1` 或 `--camera auto`。采集器为 `./.venv/bin/python collect_digits.py --camera 0`。
+
+```zsh
+./demo.command                       # 离线合成演示
+./start.command --no-yolo             # 关闭目标检测
+YTO_DEVICE=cpu ./start.command        # 强制CPU推理
+./.venv/bin/python check_environment.py
+```
+
+Mac适配包括AVFoundation相机后端、主线程权限请求、Metal设备选择、苹方中文字体与原生启动器。MacBook Air M1（8 GB、macOS 15.7.9）已通过79项自动化测试、模型加载及内置相机实时显示验证；原文中的RTX5060性能与准确率记录仍为原Windows开发环境的结果。详细安装、验证和依赖说明见 [Mac部署指南](docs/DEPLOYMENT_MACOS.md)。
+
+Windows原有Python入口与PowerShell脚本保留，Windows/CUDA安装方式见 [原部署指南](docs/DEPLOYMENT.md)；PowerShell辅助脚本中的Conda路径需按本机修改。
 
 ### 工程结构与独立演示
 
 ```text
+setup_macos.command        Mac独立环境安装与启动器构建
+start.command / demo.command  Mac实时 / 离线启动
+macos/                     Mac原生启动器源码与构建脚本
 main.py                    统一工作站入口
 lg/core.py                 跟踪、框选与业务手势判断
 lg/controls.py             启停时序、格口范围与操作指引
@@ -242,11 +255,11 @@ tests/                     自动化验证
 
 | 功能 | 单独运行 |
 |---|---|
-| 双指框选 | `python demo_roi.py --camera 1` |
-| 区域拍照 | `python demo_photo.py --camera 1` |
-| 异常件取证 | `python demo_damage.py --camera 1` |
-| 数字与格口 | `python demo_digits.py --camera 1` |
-| 动作识别 | `python demo_actions.py --camera 1` |
+| 双指框选 | `python demo_roi.py --camera 0` |
+| 区域拍照 | `python demo_photo.py --camera 0` |
+| 异常件取证 | `python demo_damage.py --camera 0` |
+| 数字与格口 | `python demo_digits.py --camera 0` |
+| 动作识别 | `python demo_actions.py --camera 0` |
 | 条码静态校验 | `python demo_barcode.py` |
 | 全量测试 | `python -B -s -m unittest discover -s tests -v` |
 

@@ -30,3 +30,14 @@ models/*
 !models/gesture_labels.json
 # Machine-specific agent routing stays local
 AGENTS.md
+
+# Local macOS runtime
+.python/
+.tools/
+.uv-cache/
+
+# Generated Mac artifacts and local deployment notes
+.DS_Store
+*.app/
+MACOS_启动说明.md
+!docs/DEPLOYMENT_MACOS.md

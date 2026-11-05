@@ -186,6 +186,10 @@
   .mtable thead th:first-child,.mtable tbody th{text-align:left}
   .mtable tbody th{font-weight:600;font-size:14.5px;padding-left:20px;color:var(--ink)}
   .mtable td.yto,.mtable th.yto{background:rgba(101,68,165,.07);border-left:1px solid rgba(101,68,165,.32);border-right:1px solid rgba(101,68,165,.32)}
+  table.mtable.ext{min-width:0}
+  table.mtable.ext td{white-space:normal;text-align:left;line-height:1.8;vertical-align:top;font-size:15px}
+  table.mtable.ext thead th{text-align:left;font-size:14px}
+  table.mtable.ext th:first-child{white-space:nowrap;font-size:15px}
   .ok{color:var(--green);font-weight:600}
   .mid{color:var(--gold);font-weight:600}
   .off{color:var(--ink3)}
@@ -272,9 +276,9 @@
   <div class="wrap inner">
     <div class="kicker">YTO Innovation · 圆通创新大赛</div>
     <h1>基于 AI 视觉的<br><em>操作工隔空手勢操作系統</em></h1>
-    <p class="sub">双手，就是操作台。面向物流操作中心的视觉交互工作站：用一枚固定摄像头把「指一下、比个数字、握拳」变成业务指令，让扫码、拍照、取证与设备控制收进同一个工作面。</p>
+    <p class="sub">双手，就是操作台。面向物流操作中心的视觉交互工作站：用一枚固定摄像头把「指一下、比个数字、握拳」变成业务指令，让扫码、拍照、取证与设备控制收进同一个工作面。人工标注的破损位置沉淀为训练样本，数字手势 1–10 为 PLC 与机器人任务预留指令入口。</p>
     <div class="badges">
-      <span>5 类业务闭环</span>
+      <span>5 类业务闭环 · 3 类扩展</span>
       <span>手势测试 98.85%</span>
       <span>YOLO12n 13.56ms</span>
       <span>Apple Silicon M1 已验证</span>
@@ -304,7 +308,7 @@
     <div class="toc-grid">
       <a class="toc-card reveal" href="#s-problem">
         <span class="no num">01</span>
-        <span><b>场景痛点</b><span class="d">三个被设备打断的作业瞬间</span></span></a>
+        <span><b>场景痛点</b><span class="d">四个真实作业断点</span></span></a>
       <a class="toc-card reveal" href="#s-solution" style="--d:.03s">
         <span class="no num">02</span>
         <span><b>方案总览</b><span class="d">一枚摄像头，五个动作，一个工作站</span></span></a>
@@ -335,11 +339,11 @@
   <div class="s-index num">01</div>
   <div class="wrap">
     <div class="kicker reveal">Problem · 场景痛点</div>
-    <h2 class="title reveal" style="--d:.05s">双手被占用时，<br>操作员还要寻找设备</h2>
-    <p class="lead reveal" style="--d:.1s">在分拣、异常处置和装卸衔接等环节，操作员一边搬运快件，一边寻找按键、拿起扫码设备、切换拍照终端、录入结果。操作本身不复杂，但频繁放下、拿起、切换设备，会打断连续作业。</p>
+    <h2 class="title reveal" style="--d:.05s">腾手、弯腰、切换终端，<br>都在打断连续作业</h2>
+    <p class="lead reveal" style="--d:.1s">在分拣、异常处置和装卸衔接等环节，操作员一边搬运快件，一边寻找按键、拿起扫码设备、切换拍照终端、录入结果；散件落到地面时，还要反复弯腰对准面单。操作本身不复杂，但频繁放下、拿起、弯腰和切换设备，会打断连续作业。</p>
 
     <div class="statstrip reveal" style="--d:.15s;margin-top:44px">
-      <div class="s"><div class="v num">3<em>类</em></div><div class="k">高频中断动作</div></div>
+      <div class="s"><div class="v num">4<em>类</em></div><div class="k">高频中断动作</div></div>
       <div class="s"><div class="v num">2<em>次</em></div><div class="k">单次取证最少腾手次数</div></div>
       <div class="s"><div class="v num">4<em>台</em></div><div class="k">传统流程涉及的设备/终端</div></div>
       <div class="s"><div class="v num">0<em>次</em></div><div class="k">本方案取证时的设备拿放</div></div>
@@ -385,9 +389,9 @@
         <h3 class="sub">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5" stroke-linecap="round"/></svg>
           破损上报：信息散落在多个动作里</h3>
-          <p style="color:var(--ink2);font-size:16px">破损件处理通常包含：拆包 → 取出物品 → 拿手机拍照 → 填写描述 → 上报 → 贴单 → 再扫码。照片、描述与单号分散在不同操作中，操作员需要反复腾手。</p>
+          <p style="color:var(--ink2);font-size:16px">破损件处理通常包含：拆包 → 取出物品 → 拿手机拍照 → 填写描述 → 上报 → 贴单 → 再扫码。照片、描述与单号分散在不同操作中，操作员需要反复腾手。中心当前主要依靠人工拦截破损件，发现后通常只做包装处理；若在传送带机位拍照并标注破损位置，这些判断可以沉淀为训练样本。</p>
           <div class="tags" style="margin-top:18px">
-            <span class="tag on">拍照 + 识别 + 报告</span><span class="tag">状态跨模式共享</span><span class="tag">证据可追溯</span>
+            <span class="tag on">拍照 + 识别 + 报告</span><span class="tag">破损标注（扩展）</span><span class="tag">证据可追溯</span>
           </div>
       </div>
       <div class="reveal" style="--d:.1s">
@@ -395,6 +399,29 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 16l9 5 9-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           灵感：从 Vision Pro 到物流工位</h3>
           <p style="color:var(--ink2);font-size:16px">项目起点是手动供件台上的连续作业；另一条灵感来自 Apple Vision Pro 的手势交互——用自然手部动作表达意图，通过可见反馈确认结果。本项目把这套思路落到固定摄像头与桌面程序上，无需佩戴头显。</p>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="cols2">
+      <div class="reveal">
+        <h3 class="sub">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20h16M7 16V8m5 8V4m5 12v-6" stroke-linecap="round"/></svg>
+          地面面单：反复弯腰对准条码</h3>
+          <p style="color:var(--ink2);font-size:16px">散件集中到地面时，操作员需要一次次弯腰、对准面单再扫码。把固定摄像头对准地面面单堆，用手势框选目标面单，可以保持站姿完成扫码，减少重复弯腰。</p>
+          <div class="tags" style="margin-top:18px">
+            <span class="tag on">地面机位</span><span class="tag">站姿框选扫码</span><span class="tag">减少弯腰次数</span>
+          </div>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <h3 class="sub">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/><path d="M10 7h4a3 3 0 013 3v4" stroke-linecap="round"/><path d="M5 10v4a3 3 0 003 3h6" stroke-linecap="round"/></svg>
+          设备与终端：指令分散在不同面板</h3>
+          <p style="color:var(--ink2);font-size:16px">格口切换、分拣设备启停与机器人任务确认，往往分布在不同的按钮面板和终端上。操作员需要在工位、屏幕与设备之间来回切换，交接时还要重复确认当前状态。</p>
+          <div class="tags" style="margin-top:18px">
+            <span class="tag on">指令入口统一</span><span class="tag">PLC / 分拣控制</span><span class="tag">机器人任务</span>
+          </div>
       </div>
     </div>
 
@@ -437,7 +464,7 @@
   <div class="wrap">
     <div class="kicker reveal">Solution · 方案总览</div>
     <h2 class="title reveal" style="--d:.05s">一枚摄像头，五种动作，<br>把业务收进同一个工作面</h2>
-    <p class="lead reveal" style="--d:.1s">固定摄像头感知手部关键点，轻量分类模型识别自定义手势，规则状态机判断「停留」与「时序动作」，再分发给条码、拍照、目标检测与设备控制。所有模块共用同一套特征与界面。</p>
+    <p class="lead reveal" style="--d:.1s">固定摄像头感知手部关键点，轻量分类模型识别自定义手势，规则状态机判断「停留」与「时序动作」，再分发给条码、拍照、目标检测与设备控制。所有模块共用同一套特征与界面；同一入口还可扩展到破损标注、地面面单扫码与 PLC / 机器人指令。</p>
 
     <div class="flow reveal" style="margin-top:44px">
       <div class="step"><b>01 看见</b><span>俯拍摄像头持续取帧</span></div>
@@ -457,7 +484,7 @@
           五个动作，五种业务闭环</h3>
         <div class="deflist">
           <div class="row"><dt>双指框选<small>TWO-FINGER ROI</small></dt><dd>指定「我要操作哪一件」，是拍照、取证、扫码的共同入口</dd></div>
-          <div class="row"><dt>双手相同数字<small>DIGITS 2–5</small></dt><dd>把数字手势映射为格口编号，顶部大字确认绑定结果</dd></div>
+          <div class="row"><dt>数字手势 1–10<small>DIGITS</small></dt><dd>当前用 2–5 映射格口编号并大字确认；1–10 为 PLC、分拣控制与机器人任务预留指令位</dd></div>
           <div class="row"><dt>双手握拳 / 双次 OK<small>TEMPORAL</small></dt><dd>时序动作表达启停意图，单帧姿态不会误触发</dd></div>
           <div class="row"><dt>停留进度圈<small>DWELL</small></dt><dd>稳定约 1.1 秒后锁定目标，容忍轻微抖动</dd></div>
         </div>
@@ -477,6 +504,23 @@
         </div>
       </div>
     </div>
+
+    <div class="hr"></div>
+
+    <h3 class="sub reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round"/></svg>
+      三类扩展场景：从取证到训练，从格口到设备</h3>
+    <div class="mtable-wrap reveal" style="--d:.1s">
+      <table class="mtable ext">
+        <thead><tr><th>场景</th><th>当前能力</th><th>下一阶段</th></tr></thead>
+        <tbody>
+          <tr><td><b>破损件人工标注</b></td><td>框选拍照留存原图；破损模式生成 JSON 报告</td><td>增加破损位置标注、样本分类与训练数据导出，形成「人工发现 → 拍照标注 → 模型迭代」闭环</td></tr>
+          <tr><td><b>地面面单扫码</b></td><td>框选条码、多帧解码、去重与诊断</td><td>固定机位对准地面面单堆，站姿框选扫码，按现场调整角度与补光</td></tr>
+          <tr><td><b>手势 1–10 设备指令</b></td><td>2–5 数字完成本地格口绑定</td><td>对接 PLC 与分拣控制：权限校验、安全互锁、指令下发、格口切换与状态反馈；探索机器人任务选择、工位指定、暂停与确认</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note reveal">扩展场景均已进入方案设计，表格中的「下一阶段」为规划内容；当前可运行能力以五段实机演示与公开验证记录为准。</p>
   </div>
 </section>
 
@@ -485,8 +529,8 @@
   <div class="s-index num">03</div>
   <div class="wrap">
     <div class="kicker reveal">Demo · 功能演示</div>
-    <h2 class="title reveal" style="--d:.05s">五段实机演示：<br>从「看见异常」到「留下证据」</h2>
-    <p class="lead reveal" style="--d:.1s">以下动图为页面内嵌、无声、自动循环，播放速度与原始视频一致，无需点击。每段下方保留高清无声 MP4 入口。</p>
+    <h2 class="title reveal" style="--d:.05s">五段实机演示：<br>从发现异常到业务闭环</h2>
+    <p class="lead reveal" style="--d:.1s">以下动图为页面内嵌、无声、自动循环，播放速度与原始视频一致，无需点击。每段下方保留高清无声 MP4 入口。破损标注、地面面单扫码与手势 1–10 设备指令是现有能力的延伸场景，标注导出与 PLC 联动列入扩展计划。</p>
 
     <!-- 3.1 破损识别 -->
     <article class="dive">
@@ -525,11 +569,12 @@
       <div>
         <div class="rank reveal">DEMO 3.2 · 证据采集</div>
         <h3 class="reveal" style="--d:.04s">快件拍照取证</h3>
-        <p class="pos reveal" style="--d:.08s">快件外包装、封口、面单或内件需要记录时，无需拿起独立拍照终端，通过双指即可指定拍摄范围。</p>
+        <p class="pos reveal" style="--d:.08s">快件外包装、封口、面单或内件需要记录时，无需拿起独立拍照终端，通过双指即可指定拍摄范围。该能力可承接破损件人工标注：操作员在传送带机位画面上框选破损区域拍照，为后续标注与破损检测训练积累素材。</p>
         <dl>
           <div class="reveal" style="--d:.1s"><dt>定框</dt><dd>两只手食指指尖确定矩形区域，停留进度圈闭合后保存照片</dd></div>
           <div class="reveal" style="--d:.14s"><dt>优化边界</dt><dd>可结合目标检测优化所选物体边界，减少背景干扰</dd></div>
           <div class="reveal" style="--d:.18s"><dt>结果保留</dt><dd><b>右侧保留最新照片缩略图</b>，手指离开后仍可核对，下一次拍照自动更新；原图在本地保存</dd></div>
+          <div class="reveal" style="--d:.22s"><dt>破损件标注</dt><dd>人工发现破损后框选拍照并留存原图，破损模式同时生成 <b>JSON 报告</b>；破损位置坐标、样本分类与训练数据导出列为下一阶段扩展</dd></div>
         </dl>
         <div class="metric reveal" style="--d:.22s">
           <div class="m"><b class="num">2</b><span>指定位</span></div>
@@ -581,6 +626,8 @@
           <div class="reveal" style="--d:.14s"><dt>拒绝规则</dt><dd>不同数字、数字 1 及其他手势不绑定，避免误切换</dd></div>
           <div class="reveal" style="--d:.18s"><dt>结果反馈</dt><dd>顶部以<b>大字高亮显示「已绑定：X 号格口」</b>，绑定结果可跨程序重启恢复</dd></div>
           <div class="reveal" style="--d:.22s"><dt>当前边界</dt><dd>本地逻辑绑定；后续对接工位、摆臂及分拣控制服务，增加设备反馈校验</dd></div>
+          <div class="reveal" style="--d:.26s"><dt>扩展 · 手势 1–10</dt><dd>对接 <b>PLC 与分拣控制系统</b>：在工位权限与安全互锁约束下下发设备指令、切换格口并回读状态；当前 2–5 已可本地绑定，1–10 为指令位预留</dd></div>
+          <div class="reveal" style="--d:.3s"><dt>扩展 · 机器人任务</dt><dd>用手势完成任务选择、目标工位指定、暂停与任务确认，减少操作员在不同终端之间切换；处于方案探索阶段</dd></div>
         </dl>
         <div class="plinks reveal" style="--d:.26s">
           <span class="pl-label">高清入口</span>
@@ -598,12 +645,13 @@
       <div>
         <div class="rank reveal">DEMO 3.5 · 单件复核</div>
         <h3 class="reveal" style="--d:.04s">单号独立识别</h3>
-        <p class="pos reveal" style="--d:.08s">同一桌面存在多个快件或多个标签时，通过框选明确需要识别的条码，便于复核和单件操作。</p>
+        <p class="pos reveal" style="--d:.08s">同一桌面存在多个快件或多个标签时，通过框选明确需要识别的条码，便于复核和单件操作。在散件集中到地面的工位，也可以把摄像头对准地面面单堆，站姿框选扫码。</p>
         <dl>
           <div class="reveal" style="--d:.1s"><dt>框选解码</dt><dd>双指框定条码区域，保留条码两端空白，原始高清画面用于解码</dd></div>
           <div class="reveal" style="--d:.14s"><dt>解码能力</dt><dd>ZXing 支持一维条码、二维条码，配合灰度、对比度处理、缩放及多帧重试</dd></div>
           <div class="reveal" style="--d:.18s"><dt>结果管理</dt><dd>扫码结果与区域缩略图在右侧显示，同一条码去重计数，失败时保留诊断信息</dd></div>
-          <div class="reveal" style="--d:.22s"><dt>能力边界</dt><dd>读取条码内容，不等同于通过 OCR 读取所有面单文字</dd></div>
+          <div class="reveal" style="--d:.22s"><dt>地面面单</dt><dd>固定机位对准地面面单堆，操作员保持站姿框选目标面单，减少反复弯腰与对准动作；弯折、遮挡和反光需要通过机位角度与补光调整</dd></div>
+          <div class="reveal" style="--d:.26s"><dt>能力边界</dt><dd>读取条码内容，不等同于通过 OCR 读取所有面单文字</dd></div>
         </dl>
         <div class="plinks reveal" style="--d:.26s">
           <span class="pl-label">高清入口</span>
@@ -723,11 +771,23 @@
     <div class="dir reveal" style="--d:.1s">
       <div class="dn">VALUE 03</div>
       <h3>异常处置：发现即留证</h3>
-      <p>照片、条码、目标标签与事件日志关联留存，缩短「发现异常 → 留下证据」的链路。建议测量发现到留证的时间、证据完整率、报告关联率与复核耗时。</p>
-      <div class="mapline"><b>MEASURE</b>留证耗时 · 证据完整率 · 复核耗时</div>
+      <p>照片、条码、目标标签与事件日志关联留存，缩短「发现异常 → 留下证据」的链路；人工标注的破损位置同步进入样本库，为后续模型迭代提供数据。建议测量发现到留证的时间、证据完整率、报告关联率与复核耗时。</p>
+      <div class="mapline"><b>MEASURE</b>留证耗时 · 证据完整率 · 标注条数</div>
     </div>
     <div class="dir reveal" style="--d:.15s">
       <div class="dn">VALUE 04</div>
+      <h3>数据资产：人工判断转成标注样本</h3>
+      <p>中心目前依靠人工拦截破损件，判断结果通常只落到包装处理。把发现破损后的画面、单号与破损位置一起留档，可以把经验转成可复用的训练样本，减少后续专用检测模型的数据采集成本。</p>
+      <div class="mapline"><b>MEASURE</b>标注条数 · 标注一致率 · 样本入库率</div>
+    </div>
+    <div class="dir reveal" style="--d:.2s">
+      <div class="dn">VALUE 05</div>
+      <h3>设备联动：数字手势统一指令入口</h3>
+      <p>数字手势 1–10 可承载格口切换、设备启停与机器人任务选择，在权限与安全互锁约束下下发指令并回读状态，减少操作员在不同按钮面板和终端之间切换。</p>
+      <div class="mapline"><b>MEASURE</b>指令成功率 · 状态回读时延 · 终端切换次数</div>
+    </div>
+    <div class="dir reveal" style="--d:.25s">
+      <div class="dn">VALUE 06</div>
       <h3>复制与推广：一个入口承载多项操作</h3>
       <p>统一启动脚本、共享特征处理与可替换模型降低复制成本；新工位只需调整机位与动作配置。建议测量新工位部署时长、模型维护成本与培训达标时间。</p>
       <div class="mapline"><b>MEASURE</b>部署时长 · 维护成本 · 培训达标时间</div>
@@ -750,9 +810,9 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 9v4m0 4h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           明确不做的承诺</h3>
         <div class="deflist">
-          <div class="row"><dt>设备控制</dt><dd>传送带与格口为本地模拟，未接入 PLC、分拣系统与企业上报接口</dd></div>
+          <div class="row"><dt>设备控制</dt><dd>传送带与格口为本地模拟，未接入 PLC、分拣系统与企业上报接口；PLC 指令与机器人任务为规划内容</dd></div>
           <div class="row"><dt>安全职责</dt><dd>不承担硬件安全急停；原有物理急停与安全互锁继续保留</dd></div>
-          <div class="row"><dt>破损判定</dt><dd>模型识别物品类别，破损由操作员发现并发起取证</dd></div>
+          <div class="row"><dt>破损判定</dt><dd>模型识别物品类别，破损由操作员发现并发起取证；位置标注与训练数据导出尚未实现</dd></div>
         </div>
       </div>
     </div>
@@ -776,12 +836,12 @@
       <div class="ph">
         <div class="t">PHASE 02</div>
         <b>工位影子运行</b>
-        <ul><li>不参与实际控制，只记录</li><li>覆盖不同人员与件量</li><li>记录误触发与漏识别</li><li>积累本地采集数据</li></ul>
+        <ul><li>不参与实际控制，只记录</li><li>覆盖不同人员与件量</li><li>记录误触发与漏识别</li><li>积累破损标注与地面扫码样本</li></ul>
       </div>
       <div class="ph">
         <div class="t">PHASE 03</div>
         <b>人工确认设备联调</b>
-        <ul><li>PLC 协议与状态反馈</li><li>指令确认与工位权限</li><li>安全互锁与异常回退</li><li>设备侧执行校验</li></ul>
+        <ul><li>PLC 协议与状态反馈</li><li>手势 1–10 指令映射</li><li>安全互锁与权限校验</li><li>机器人任务选择与工位指定</li></ul>
       </div>
       <div class="ph">
         <div class="t">PHASE 04</div>
@@ -796,6 +856,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M5 10l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
           扩展方向</h3>
         <div class="deflist">
+          <div class="row"><dt>破损标注</dt><dd>破损位置标注、样本分类与训练数据导出，形成人工标注回流</dd></div>
+          <div class="row"><dt>地面扫码</dt><dd>地面面单堆专用机位与补光，站姿框选替代反复弯腰</dd></div>
           <div class="row"><dt>更多指令</dt><dd>复核确认、重扫、撤销、工位切换、装卸交接确认</dd></div>
           <div class="row"><dt>专用检测</dt><dd>包装开裂、湿损、压损、散落物品、禁限寄疑似物</dd></div>
           <div class="row"><dt>流程联动</dt><dd>单号关联、异常工单、照片上传、处理回执</dd></div>
@@ -807,8 +869,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5" stroke-linecap="round"/></svg>
           答辩演示建议动线</h3>
         <div class="tl">
-          <div class="item"><div class="when">0:00 – 0:50</div><b>问题与场景</b><p>用三张现场图说明「双手被占用还要找设备」的断点</p></div>
-          <div class="item"><div class="when">0:50 – 2:30</div><b>五段演示</b><p>按取证 → 拍照 → 启停 → 格口 → 扫码顺序播放，每段强调一个业务闭环</p></div>
+          <div class="item"><div class="when">0:00 – 0:50</div><b>问题与场景</b><p>用现场图说明双手被占用、地面面单反复弯腰与多终端切换三类断点</p></div>
+          <div class="item"><div class="when">0:50 – 2:30</div><b>五段演示</b><p>按取证 → 拍照（破损标注）→ 启停 → 格口（1–10 扩展）→ 扫码（地面面单）顺序播放</p></div>
           <div class="item"><div class="when">2:30 – 3:40</div><b>技术链路</b><p>讲清关键点、分类、状态机与业务分发；说明为何用规则约束误触发</p></div>
           <div class="item"><div class="when">3:40 – 5:00</div><b>证据与边界</b><p>先讲指标口径再讲结果；主动说明未接入 PLC、不替代急停</p></div>
         </div>

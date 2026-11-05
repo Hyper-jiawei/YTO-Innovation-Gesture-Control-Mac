@@ -44,7 +44,7 @@
 | 扫码 · 拍照 · 取证 · 启停 · 格口 | **98.85%**（257/260） | **96.54%** / 接受样本 99.20% | **约 13.56 ms**（中位数） | 实时交互 + 五类演示 + 本地留存 |
 | 双指框选 + 双手数字 + 时序动作 | 同一采集批次时间分段留出 | 阈值过滤后的可用性 | 不含采集与界面刷新 | 设备联动与企业接口待接入 |
 
-<p align="center"><sub>演示动图为页面内嵌、无声、自动循环，无需点击。</sub></p>
+<p align="center"><sub>演示动图为页面内嵌、自动循环，无需点击。</sub></p>
 
 ## 目录
 
@@ -165,7 +165,7 @@
 
 ![双手数字绑定摆臂格口：自动循环演示](docs/assets/animations/gate-binding.webp)
 
-<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/gate-binding.mp4"><b>▶ 查看高清无声视频（MP4）</b></a></p>
+<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/gate-binding.mp4"><b>▶ 查看高清视频（MP4）</b></a></p>
 
 ### 演示 5｜单号独立识别
 

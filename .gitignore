@@ -48,3 +48,4 @@ examples/video/
 # Static documentation media publishing
 !docs/.nojekyll
 !docs/index.html
+!docs/presentation.html

@@ -44,3 +44,7 @@ MACOS_启动说明.md
 
 # User-supplied source media; published copies live under docs/assets/
 examples/video/
+
+# Static documentation media publishing
+!docs/.nojekyll
+!docs/index.html

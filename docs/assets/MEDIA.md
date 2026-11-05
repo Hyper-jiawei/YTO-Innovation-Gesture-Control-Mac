@@ -17,6 +17,6 @@
 | 功能演示 | videos/gate-binding.mp4 | 格口绑定.mp4 |
 | 功能演示 | videos/barcode-scan.mp4 | 单号独立识别.mp4 |
 
-场景PNG与五段功能MP4为原文件副本。两段现场MP4转为1280像素宽、H.264/AAC、网页渐进加载副本，完整保留时序；视频同名JPG为对应视频中间位置的真实预览帧。README使用“可点击预览图 + MP4链接”，点击进入GitHub视频文件页；不使用GIF或依赖README的HTML video标签。
+场景PNG保持原图；五段功能MP4从原HEVC/H.265转为H.264/AAC、30fps、原始分辨率的兼容副本，原始素材保留在本机。两段现场MP4转为1280像素宽、H.264/AAC、网页渐进加载副本，完整保留时序；视频同名JPG为对应视频中间位置的真实预览帧。所有MP4均为H.264/AAC并将moov索引前置（faststart）。README使用“可点击预览图 + MP4链接”，链接指向本仓库GitHub Pages的实际视频资源，由浏览器原生播放器打开；不指向GitHub blob文件浏览页，不使用GIF或依赖README的HTML video标签。
 
 图3、图4呈现异常件处理动作，不代表图片中的物品已被判定破损。图5用于说明手势交互灵感，不表示本项目使用Apple头显或其技术实现。

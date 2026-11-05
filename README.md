@@ -32,9 +32,9 @@
 
 *图5｜Apple Vision Pro 手势交互参考图，用于说明项目交互灵感。*
 
-[![手动供件台现场视频预览，点击播放MP4](docs/assets/videos/manual-feeding.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/manual-feeding.mp4)
+[![手动供件台现场视频预览，点击播放MP4](docs/assets/videos/manual-feeding.jpg)](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/manual-feeding.mp4)
 
-[▶ 播放手动供件台现场视频（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/manual-feeding.mp4)
+[▶ 播放手动供件台现场视频（MP4）](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/manual-feeding.mp4)
 
 从现场动作出发，项目希望把<strong>发现问题 → 指定目标 → 拍照、识别与扫码 → 留存处理记录</strong>放在同一个工位内完成，减少拿取设备和等待切换的时间。
 
@@ -48,9 +48,9 @@
 
 *图1｜人员站上传送带的现场情况：停止入口的触达距离是本项目关注的作业问题。*
 
-[![传送带现场风险视频预览，点击播放MP4](docs/assets/videos/conveyor-risk.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/conveyor-risk.mp4)
+[![传送带现场风险视频预览，点击播放MP4](docs/assets/videos/conveyor-risk.jpg)](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/conveyor-risk.mp4)
 
-[▶ 播放传送带现场风险视频（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/conveyor-risk.mp4)
+[▶ 播放传送带现场风险视频（MP4）](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/conveyor-risk.mp4)
 
 当前演示采用“双手握拳保持1秒 → 软件提交停止指令 → 界面确认”的规则，实际端到端停机时间尚未测量，也尚未接入PLC。现场手势停机的落地需完成设备联调、执行反馈与安全验证；原有物理急停和安全互锁继续保留，不能用本原型替代。这里的价值方向是缩短触达操作入口的时间，不把演示描述为已验证的安全急停系统。
 
@@ -100,7 +100,7 @@
 
 ## 场景与演示
 
-下列五项功能演示全部使用MP4，点击预览图或“播放MP4”链接进入视频文件页观看。现场参考视频与功能演示分开展示；视频预览图均为对应视频的真实截帧，图1—图5为用户提供的场景与灵感参考图。功能视频来自原Windows开发环境，展示共用业务流程，Mac环境安装及验证说明见下文；界面与操作规则以当前代码为准。
+下列五项功能演示全部使用MP4，点击预览图或“播放MP4”链接，使用浏览器播放器直接观看；视频由本仓库的GitHub Pages提供。现场参考视频与功能演示分开展示；视频预览图均为对应视频的真实截帧，图1—图5为用户提供的场景与灵感参考图。全部视频提供H.264/AAC兼容版本并支持渐进加载。功能视频来自原Windows开发环境，展示共用业务流程，Mac环境安装及验证说明见下文；界面与操作规则以当前代码为准。
 
 ### 演示1｜破损识别与异常上报取证
 
@@ -111,9 +111,9 @@
 - 目标框显示类别与置信度，保存带标注的取证照片及 JSON 报告；移开手指后隐藏临时识别结果。
 - 该流程实现的是<strong>操作员发起异常 → 目标识别 → 拍照取证 → 本地报告</strong>，企业系统上传和专用破损检测模型为后续接入内容。
 
-[![破损识别与异常件取证视频预览，点击播放MP4](docs/assets/videos/damage-report.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/damage-report.mp4)
+[![破损识别与异常件取证视频预览，点击播放MP4](docs/assets/videos/damage-report.jpg)](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/damage-report.mp4)
 
-[▶ 播放破损识别与异常件取证（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/damage-report.mp4)
+[▶ 播放破损识别与异常件取证（MP4）](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/damage-report.mp4)
 
 ### 演示2｜快件拍照取证
 
@@ -123,9 +123,9 @@
 - 可结合目标检测优化所选物体边界，减少背景干扰。
 - <strong>右侧保留最新照片缩略图</strong>，手指离开后仍可核对，下一次拍照自动更新；原图在本地保存。
 
-[![快件区域拍照与证据预览视频预览，点击播放MP4](docs/assets/videos/photo-evidence.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/photo-evidence.mp4)
+[![快件区域拍照与证据预览视频预览，点击播放MP4](docs/assets/videos/photo-evidence.jpg)](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/photo-evidence.mp4)
 
-[▶ 播放快件区域拍照与证据预览（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/photo-evidence.mp4)
+[▶ 播放快件区域拍照与证据预览（MP4）](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/photo-evidence.mp4)
 
 ### 演示3｜手势控制传送带
 
@@ -139,9 +139,9 @@
 
 双手在两次 OK 之间保持入镜并松开手指。单次 OK 持续不动只算一次，不会启动。各模式共享启停逻辑；顶部显示的是本地模拟执行状态。
 
-[![双手握拳停止与双次OK启动视频预览，点击播放MP4](docs/assets/videos/gesture-control.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/gesture-control.mp4)
+[![双手握拳停止与双次OK启动视频预览，点击播放MP4](docs/assets/videos/gesture-control.jpg)](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/gesture-control.mp4)
 
-[▶ 播放双手握拳停止与双次OK启动（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/gesture-control.mp4)
+[▶ 播放双手握拳停止与双次OK启动（MP4）](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/gesture-control.mp4)
 
 ### 演示4｜摆臂格口绑定
 
@@ -152,9 +152,9 @@
 - 顶部以<strong>大字高亮显示“已绑定：X号格口”</strong>，绑定结果可跨程序重启恢复。
 - 当前为本地逻辑绑定，后续可对接工位、摆臂及分拣控制服务，增加设备反馈校验。
 
-[![双手数字绑定摆臂格口视频预览，点击播放MP4](docs/assets/videos/gate-binding.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/gate-binding.mp4)
+[![双手数字绑定摆臂格口视频预览，点击播放MP4](docs/assets/videos/gate-binding.jpg)](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/gate-binding.mp4)
 
-[▶ 播放双手数字绑定摆臂格口（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/gate-binding.mp4)
+[▶ 播放双手数字绑定摆臂格口（MP4）](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/gate-binding.mp4)
 
 ### 演示5｜单号独立识别
 
@@ -165,9 +165,9 @@
 - 扫码结果与区域缩略图在右侧显示，同一条码去重计数，失败时保留诊断信息。
 - 本模块读取条码内容，不等同于通过 OCR 读取所有面单文字。
 
-[![指定区域单号独立识别视频预览，点击播放MP4](docs/assets/videos/barcode-scan.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/barcode-scan.mp4)
+[![指定区域单号独立识别视频预览，点击播放MP4](docs/assets/videos/barcode-scan.jpg)](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/barcode-scan.mp4)
 
-[▶ 播放指定区域单号独立识别（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/barcode-scan.mp4)
+[▶ 播放指定区域单号独立识别（MP4）](https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/barcode-scan.mp4)
 
 ## AI技术与训练
 

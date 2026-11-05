@@ -71,7 +71,7 @@
 
 *图1｜人员站上传送带：停止入口的触达距离，是本项目关注的作业问题。*
 
-![传送带现场风险：无声自动循环演示](docs/assets/animations/conveyor-risk.webp)
+![传送带现场风险：自动循环演示](docs/assets/animations/conveyor-risk.webp)
 
 <p align="center"><sub>双手握拳保持 1 秒 → 软件提交停止指令 → 界面确认；端到端停机时间尚未测量，尚未接入 PLC。</sub></p>
 
@@ -101,7 +101,7 @@
 
 *图5｜Apple Vision Pro 手势交互参考图，用于说明交互灵感。*
 
-![手动供件台现场：无声自动循环演示](docs/assets/animations/manual-feeding.webp)
+![手动供件台现场：自动循环演示](docs/assets/animations/manual-feeding.webp)
 
 <p align="center"><sub>手动供件台现场：双手搬运、拆包与整理时，指令输入仍依赖固定按键、扫码枪与手机。</sub></p>
 
@@ -109,7 +109,7 @@
 
 ## 02 五个动作：五种业务闭环
 
-<p><b>五个功能演示均为直接内嵌、无声、自动循环的动图，无需点击播放。</b>播放速度与原始视频一致；为保证 GitHub 页面内直接加载，单段动图均压缩至 5MB 以内。每段下方保留高清无声 MP4 入口。</p>
+<p><b>五个功能演示均为直接内嵌、自动循环的动图，无需点击播放。</b>播放速度与原始视频一致；为保证 GitHub 页面内直接加载，单段动图均压缩至 5MB 以内。每段下方保留 MP4 入口。</p>
 
 > 功能素材来自原 Windows 开发环境，展示共用业务流程；Mac 环境安装与验证见[快速开始](#07-快速开始mac)。
 
@@ -122,9 +122,9 @@
 - 目标框显示类别与置信度，保存带标注的取证照片及 JSON 报告；移开手指后隐藏临时识别结果。
 - 当前实现的是**操作员发起异常 → 目标识别 → 拍照取证 → 本地报告**；企业系统上传与专用破损检测模型为后续接入内容。
 
-![破损识别与异常件取证：无声自动循环演示](docs/assets/animations/damage-report.webp)
+![破损识别与异常件取证：自动循环演示](docs/assets/animations/damage-report.webp)
 
-<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/damage-report.mp4"><b>▶ 查看高清无声视频（MP4）</b></a></p>
+<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/damage-report.mp4"><b>▶ 查看高清视频（MP4）</b></a></p>
 
 ### 演示 2｜快件拍照取证
 
@@ -134,9 +134,9 @@
 - 可结合目标检测优化所选物体边界，减少背景干扰。
 - **右侧保留最新照片缩略图**，手指离开后仍可核对；下一次拍照自动更新，原图保存在本地。
 
-![快件区域拍照与证据预览：无声自动循环演示](docs/assets/animations/photo-evidence.webp)
+![快件区域拍照与证据预览：自动循环演示](docs/assets/animations/photo-evidence.webp)
 
-<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/photo-evidence.mp4"><b>▶ 查看高清无声视频（MP4）</b></a></p>
+<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/photo-evidence.mp4"><b>▶ 查看高清视频（MP4）</b></a></p>
 
 ### 演示 3｜手势控制传送带
 
@@ -150,9 +150,9 @@
 
 双手在两次 OK 之间保持入镜并松开手指。单次 OK 持续不动只算一次，不会启动。各模式共享启停逻辑；顶部显示的是本地模拟执行状态。
 
-![双手握拳停止与双次OK启动：无声自动循环演示](docs/assets/animations/gesture-control.webp)
+![双手握拳停止与双次OK启动：自动循环演示](docs/assets/animations/gesture-control.webp)
 
-<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/gesture-control.mp4"><b>▶ 查看高清无声视频（MP4）</b></a></p>
+<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/gesture-control.mp4"><b>▶ 查看高清视频（MP4）</b></a></p>
 
 ### 演示 4｜摆臂格口绑定
 
@@ -163,7 +163,7 @@
 - 顶部以**大字高亮显示「已绑定：X 号格口」**，绑定结果可跨程序重启恢复。
 - 当前为本地逻辑绑定，后续可对接工位、摆臂及分拣控制服务，增加设备反馈校验。
 
-![双手数字绑定摆臂格口：无声自动循环演示](docs/assets/animations/gate-binding.webp)
+![双手数字绑定摆臂格口：自动循环演示](docs/assets/animations/gate-binding.webp)
 
 <p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/gate-binding.mp4"><b>▶ 查看高清无声视频（MP4）</b></a></p>
 
@@ -178,7 +178,7 @@
 
 ![指定区域单号独立识别：无声自动循环演示](docs/assets/animations/barcode-scan.webp)
 
-<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/barcode-scan.mp4"><b>▶ 查看高清无声视频（MP4）</b></a></p>
+<p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/barcode-scan.mp4"><b>▶ 查看高清视频（MP4）</b></a></p>
 
 ---
 
@@ -319,7 +319,7 @@ lg/actions.py              时间序列动作规则与录制
 lg/app.py / lg/ui.py       后台编排与桌面界面
 models/                    当前推理模型及手势映射
 docs/assets/animations/    原速自动循环的无声动图
-docs/assets/videos/        高清无声 MP4 及预览图
+docs/assets/videos/        高清 MP4 及预览图
 tests/                     自动化验证
 ```
 

@@ -6,7 +6,7 @@ from functools import lru_cache
 from pathlib import Path
 import cv2
 import numpy as np
-from .core import Hand, Tracker, features
+from .core import Hand, Tracker, features, physical_handedness
 from .labels import LOVE_LABEL,LABELS,FIST_DIGIT
 
 CONNECTIONS = [(0,1),(1,2),(2,3),(3,4),(0,5),(5,6),(6,7),(7,8),
@@ -112,11 +112,10 @@ class Hands:
         for index, landmarks in enumerate(result.hand_landmarks):
             p = np.array([(l.x,l.y,l.z) for l in landmarks],dtype=np.float32)
             box = (*p[:,:2].min(0), *p[:,:2].max(0))
-            # MediaPipe labels assume selfie-mirrored input; capture frames here
-            # are unmirrored. Store the operator's anatomical hand, not screen order.
+            # Keep one physical-hand mapping shared by live recognition and collection.
             categories = result.handedness[index]
             predicted = categories[0].category_name if categories else None
-            side = {'Left': 'Right', 'Right': 'Left'}.get(predicted)
+            side = physical_handedness(predicted)
             hands.append(Hand(p,self.classifier.predict(p) if self.classifier else None,box,handedness=side))
         return self.tracker.update(hands)
 
@@ -124,22 +123,44 @@ class Hands:
         self.recognizer.close()
 
 
-@lru_cache(maxsize=1)
+_selected_camera = None
+
+
+def preferred_camera_device(devices):
+    """Action 4 first, phone backup, then a remaining local camera."""
+    groups = (
+        [d for d in devices if 'action4' in d['name'].lower().replace(' ', '')],
+        [d for d in devices if any(x in d['name'].lower() for x in ('iphone', 'continuity', '的相机', "'s camera"))],
+        [d for d in devices if any(x in d['name'].lower() for x in ('facetime', 'built-in', '内置'))],
+        devices,
+    )
+    for group in groups:
+        if group:
+            return group[0]
+    raise RuntimeError('未发现可用摄像头：请连接 Action 4、手机连续互通相机或内置相机。')
+
+
 def action4_camera_index():
-    """Match AVFoundation device names; never fall back to a phone camera."""
+    """Re-enumerate on each open so unplug/replug does not reuse stale indices."""
     import json
     import subprocess
+    global _selected_camera
     root = Path(__file__).resolve().parents[1]
     helper = root / '.tools/bin/yto-cameras'
     command = [str(helper)] if helper.is_file() else ['/usr/bin/swift', str(root/'macos/list_cameras.swift')]
     devices = json.loads(subprocess.check_output(command, text=True))
-    matches = [d for d in devices if 'action4' in d['name'].lower().replace(' ', '')]
-    if len(matches) != 1:
-        names = ', '.join(d['name'] for d in devices) or '无'
-        raise RuntimeError(f'无法唯一定位 OsmoAction4；当前设备：{names}。请确认 Action 4 已进入 USB 摄像头模式。')
-    device = matches[0]
+    _selected_camera = preferred_camera_device(devices)
+    device = _selected_camera
     print(f"CAMERA_SELECTED name={device['name']} index={device['index']}", flush=True)
     return int(device['index'])
+
+
+def camera_description(source, index):
+    if source == 'action4' and _selected_camera:
+        device = _selected_camera
+        backup = '' if 'action4' in device['name'].lower().replace(' ', '') else '（备用）'
+        return f"{device['name']}{backup} · 相机 {index}"
+    return f'摄像头/视频 {index}'
 
 
 def open_camera(source,width=1920,height=1080):
@@ -194,16 +215,15 @@ def draw(frame, hands, roi=None, progress=0, dwell_seconds=1.1):
     h,w = out.shape[:2]
     for index,hand in enumerate(hands):
         pts = (hand.points[:,:2]*[w,h]).astype(int)
-        # OpenCV uses BGR. Unknown-side legacy/demo inputs use a stable fallback.
-        is_left = hand.handedness == 'Left' if hand.handedness else index == 0
-        color = (255,0,0) if is_left else (0,255,0)
-        node_color = (0,255,0) if is_left else (255,0,0)
+        # OpenCV BGR; unknown identity must not be guessed from screen position.
+        color, node_color = ((255,0,0),(0,255,0)) if hand.handedness == 'Left' else (((0,255,0),(255,0,0)) if hand.handedness == 'Right' else ((160,160,160),(220,220,220)))
         for a,b in CONNECTIONS:
             cv2.line(out,tuple(pts[a]),tuple(pts[b]),color,4,cv2.LINE_AA)
         for i,p in enumerate(pts):
             cv2.circle(out,tuple(p),7 if i==8 else 4,node_color,-1,cv2.LINE_AA)
         label='9 FIST' if hand.digit==FIST_DIGIT else (hand.digit if hand.digit is not None else '?')
-        cv2.putText(out,f'ID {hand.track_id} / {label}',
+        side = {'Left':'L', 'Right':'R'}.get(hand.handedness, '?')
+        cv2.putText(out,f'{side} / ID {hand.track_id} / {label}',
                     tuple(pts[0]),cv2.FONT_HERSHEY_SIMPLEX,.7,color,2)
     if roi:
         _,(a,b,c,d) = crop(out,roi)

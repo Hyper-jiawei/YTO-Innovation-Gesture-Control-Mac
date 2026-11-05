@@ -1,18 +1,10 @@
 import unittest
-from unittest.mock import patch
-from lg.vision import action4_camera_index
+from lg.vision import preferred_camera_device
 
-class Action4Selection(unittest.TestCase):
-    def tearDown(self):
-        action4_camera_index.cache_clear()
-
-    def test_selects_name_even_when_phone_has_index_one(self):
-        action4_camera_index.cache_clear()
-        with patch('subprocess.check_output',return_value='[{"index":1,"name":"iPhone"},{"index":2,"name":"OsmoAction4"}]'):
-            self.assertEqual(action4_camera_index(),2)
-
-    def test_missing_action4_never_falls_back_to_phone(self):
-        action4_camera_index.cache_clear()
-        with patch('subprocess.check_output',return_value='[{"index":1,"name":"iPhone"}]'):
-            with self.assertRaisesRegex(RuntimeError,'OsmoAction4'):
-                action4_camera_index()
+class CameraPriority(unittest.TestCase):
+    def test_action4_wins_even_if_phone_first(self):
+        self.assertEqual(preferred_camera_device([{'index':1,'name':'iPhone'},{'index':0,'name':'OsmoAction4'}])['index'],0)
+    def test_phone_backup_without_action4(self):
+        self.assertEqual(preferred_camera_device([{'index':0,'name':'FaceTime'},{'index':1,'name':'Hyper的相机'}])['index'],1)
+    def test_no_device_reports_error(self):
+        with self.assertRaises(RuntimeError):preferred_camera_device([])

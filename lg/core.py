@@ -48,6 +48,11 @@ class Hand:
     handedness: str | None = None
 
 
+def physical_handedness(category):
+    """Tasks model labels in this workstation's capture orientation; no second swap."""
+    return category if category in ('Left', 'Right') else None
+
+
 class Tracker:
     """Greedy IoU association, stable numeric identity, resets on loss."""
     def __init__(self):

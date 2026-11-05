@@ -247,6 +247,51 @@
     section{padding:40px 0}
     .reveal{opacity:1;transform:none}
   }
+
+/* Persistent, generous chapter navigation with a compact touch layout. */
+body{padding-left:244px}
+section[id]{scroll-margin-top:24px}
+.report-navigation>summary{display:none}
+.dotnav{left:12px;right:auto;top:82px;bottom:16px;width:220px;transform:none;gap:8px;padding:12px;background:rgba(255,255,255,.97);border:1px solid var(--line2);border-radius:14px;overflow-y:auto;box-shadow:0 8px 28px rgba(36,26,62,.06)}
+.dotnav::before{content:'汇报目录';font-size:14px;font-weight:700;padding:4px 8px 10px;color:var(--accent)}
+.dotnav a{flex-direction:row;min-height:52px;padding:12px 10px;border:1px solid var(--line);border-radius:9px;gap:10px}
+.dotnav span{font-size:14px;line-height:1.5;opacity:1;transform:none;white-space:normal;background:none;border:0;box-shadow:none;padding:0;color:var(--ink)}
+.dotnav a:hover{background:var(--bg3);border-color:var(--accent-dim)}
+.dotnav a.on{background:var(--accent);border-color:var(--accent)}
+.dotnav a.on span{color:#fff}.dotnav a.on i{background:#fff}
+.wrap,.cols2>*,.dive>*,.refs>*,.plan>*{min-width:0}
+.cover .inner{padding-top:100px}.cover h1{overflow-wrap:anywhere}
+.brandmark{left:24px}
+video,img{height:auto}figure{min-width:0}pre{max-width:100%;overflow:auto}
+@media(max-width:1100px){
+ body{padding-left:0}
+ .report-navigation{position:sticky;top:0;z-index:58;background:#fff;border-bottom:1px solid var(--line2)}
+ .report-navigation>summary{display:list-item;cursor:pointer;min-height:56px;padding:14px 20px 14px 90px;font-size:15px;font-weight:700;color:var(--accent);list-style-position:inside}
+ .dotnav{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:auto;max-height:45vh;transform:none;border:0;border-radius:0;margin:0 12px;padding:8px;box-shadow:none;gap:8px}
+ .dotnav::before{display:none}.dotnav a{min-height:52px}
+ .brandmark{top:8px;left:16px;z-index:59}.brandmark img{height:36px}
+ section[id]{scroll-margin-top:68px}
+ .cover{min-height:calc(100dvh - 56px)}
+ .cover .inner{padding-top:80px}
+ .cols2,.dive{grid-template-columns:1fr}
+ .dive.flip .visual{order:0}
+}
+@media(max-width:600px){
+ body{font-size:16px;line-height:1.75}
+ .wrap{padding-left:18px;padding-right:18px}
+ section{padding:64px 0}
+ h2.title{font-size:28px}.cover h1{font-size:32px;line-height:1.25}
+ .cover .cta{gap:10px}.cover .cta .btn{width:100%;justify-content:center}
+ .kicker{font-size:11px;letter-spacing:.12em}
+ .toc-grid{grid-template-columns:minmax(0,1fr)}
+ .statstrip{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .dotnav span{font-size:13px}.dotnav a{padding:10px 8px}
+ .mtable-wrap{max-width:100%;overscroll-behavior-x:contain}
+ .refs{grid-template-columns:minmax(0,1fr)}
+ .scrollhint{display:none}
+}
+@media print{body{padding-left:0}.report-navigation,.brandmark,.progress{display:none}.reveal{opacity:1;transform:none}}
+
 </style>
 </head>
 <body>
@@ -254,7 +299,8 @@
 <div class="progress"><i id="pbar"></i></div>
 <a class="brandmark" href="#s-cover" aria-label="圆通 YTO"><img src="assets/YTO.png" alt="圆通 YTO"></a>
 
-<nav class="dotnav" id="dotnav">
+<details class="report-navigation" open><summary>汇报目录 · 点击展开 / 收起</summary>
+<nav class="dotnav" id="dotnav" aria-label="汇报章节目录">
   <a href="#s-cover"><i></i><span>封面</span></a>
   <a href="#s-toc"><i></i><span>目录</span></a>
   <a href="#s-problem"><i></i><span>场景痛点</span></a>
@@ -266,6 +312,7 @@
   <a href="#s-roadmap"><i></i><span>落地路线</span></a>
   <a href="#s-team"><i></i><span>团队</span></a>
 </nav>
+</details>
 
 <!-- ================= 00 封面 ================= -->
 <section class="cover" id="s-cover">
@@ -946,6 +993,14 @@
   }
 
   var links=document.querySelectorAll('#dotnav a');
+  var navigation=document.querySelector('.report-navigation');
+  var mobileNav=window.matchMedia('(max-width:1100px)');
+  function fitNavigation(){navigation.open=!mobileNav.matches;}
+  fitNavigation();
+  if(mobileNav.addEventListener)mobileNav.addEventListener('change',fitNavigation);
+  links.forEach(function(a){a.addEventListener('click',function(){
+    if(mobileNav.matches)navigation.open=false;
+  });});
   var secs=[];
   links.forEach(function(a){
     var s=document.querySelector(a.getAttribute('href'));
@@ -955,9 +1010,9 @@
     var spy=new IntersectionObserver(function(es){
       es.forEach(function(e){
         if(e.isIntersecting){
-          links.forEach(function(a){a.classList.remove('on');});
+          links.forEach(function(a){a.classList.remove('on');a.removeAttribute('aria-current');});
           var id=e.target.id;
-          secs.forEach(function(o){if(o.s.id===id)o.a.classList.add('on');});
+          secs.forEach(function(o){if(o.s.id===id){o.a.classList.add('on');o.a.setAttribute('aria-current','location');}});
         }
       });
     },{rootMargin:'-40% 0px -55% 0px'});

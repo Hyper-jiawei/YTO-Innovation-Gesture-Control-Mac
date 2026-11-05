@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 import tkinter as tk
 from .core import Engine
-from .vision import Hands, Detector, open_camera, prepare_camera, crop, draw, draw_detections
+from .vision import Hands, Detector, open_camera, prepare_camera, camera_description, crop, draw, draw_detections
 from .actions import ActionRecognizer, SequenceRecorder
 from .business import Station
 from .demo import scene, observations, action_observations
@@ -25,7 +25,7 @@ class App:
         width=min(1480,self.root.winfo_screenwidth()-80)
         height=min(980 if args.demo else 920,self.root.winfo_screenheight()-100)
         self.root.geometry(f'{width}x{height}')
-        self.root.minsize(1080,740)
+        self.root.minsize(min(760,self.root.winfo_screenwidth()-40),min(600,self.root.winfo_screenheight()-80))
         self.commands, self.frames = queue.Queue(), queue.Queue(maxsize=2)
         self.stop = threading.Event()
         self.last_event = None
@@ -88,7 +88,7 @@ class App:
             else:
                 hands_model = Hands(self.root_path)
                 cap,base,index = open_camera(self.args.camera,self.args.camera_width,self.args.camera_height)
-                source = f'摄像头/视频 {index}'+ (' · OsmoAction4（按名称锁定）' if self.args.camera == 'action4' else '') + f' · {base.shape[1]}×{base.shape[0]} | 关键点 CPU | 数字 {hands_model.classifier.device}'
+                source = camera_description(self.args.camera,index) + f' · {base.shape[1]}×{base.shape[0]} | 关键点 CPU | 数字 {hands_model.classifier.device}'
             previous = time.monotonic()
             while not self.stop.is_set():
                 while not self.commands.empty():
@@ -194,7 +194,7 @@ class App:
                 yolo_info=f'{detector.model_name} {detector.device}'
                 if mode=='damage': yolo_info+=f' / {timing:.0f}ms' if timing is not None else ' / 预热中'
                 packet=dict(frame=rendered,info=f'{source} | {fps:.1f} FPS | {yolo_info}',
-                            digits=' / '.join(str(h.digit) if h.digit is not None else '?' for h in hands) or '等待双手',
+                            digits=' / '.join(('左手' if h.handedness == 'Left' else '右手' if h.handedness == 'Right' else '未定侧') + ':' + (str(h.digit) if h.digit is not None else '?') for h in hands) or '等待双手',
                             bound_gate=station.bound_gate,last_command=station.last_command,
                             control_name=engine.control_name,control_progress=engine.control_progress,gate_mode=mode=='command',
                             action_mode=mode=='action',action_status=actions.status if mode=='action' else '',

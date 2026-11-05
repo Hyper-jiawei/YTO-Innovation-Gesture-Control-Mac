@@ -85,12 +85,14 @@ def build_ui(self, modes):
     self.command_status=tk.Label(self.status_panel,text='最近指令：等待操作',bg=CARD,fg=TEXT,font=(font,11),anchor='w')
     self.command_status.pack(fill='x',pady=(3,8))
     guide=tk.Frame(self.status_panel,bg=CARD);guide.pack(fill='x')
+    guide_labels=[]
     for column,(name,method) in enumerate(OPERATOR_GUIDE):
         guide.columnconfigure(column,weight=1,uniform='guide')
         tile=tk.Frame(guide,bg='#f5f5fa',padx=10,pady=7)
         tile.grid(row=0,column=column,sticky='nsew',padx=(0,8) if column<2 else 0)
         tk.Label(tile,text=name,bg='#f5f5fa',fg=ACCENT,font=(font,10,'bold')).pack(anchor='w')
-        tk.Label(tile,text=method,bg='#f5f5fa',fg=TEXT,font=(font,9),wraplength=310,justify='left').pack(anchor='w',pady=(2,0))
+        guide_label=tk.Label(tile,text=method,bg='#f5f5fa',fg=TEXT,font=(font,9),wraplength=310,justify='left')
+        guide_label.pack(anchor='w',pady=(2,0));guide_labels.append(guide_label)
     footer=tk.Frame(self.root,bg=BG)
     footer.pack(side='bottom',fill='x',padx=24,pady=(2,10))
     tk.Label(footer,text='格口仅支持 2–5 · 同数绑定请进入“格口绑定”模式',
@@ -128,7 +130,7 @@ def build_ui(self, modes):
     canvas.bind('<Configure>',lambda e:canvas.itemconfigure(window,width=e.width))
     def wheel(event):
         if str(event.widget).startswith(str(sidebar)):
-            canvas.yview_scroll(-int(event.delta/120),'units')
+            canvas.yview_scroll(-int(event.delta if sys.platform == 'darwin' else event.delta/120),'units')
     self.root.bind_all('<MouseWheel>',wheel,add='+')
     right.columnconfigure(0,weight=1)
     log_row=4 if self.args.demo else 3
@@ -157,7 +159,7 @@ def build_ui(self, modes):
     for i,name in enumerate(modes):
         active=self.mode_var.get()==name
         button=ModeButton(buttons,text=name,command=lambda n=name:select_mode(n),
-                          selected=active,font=(font,10),pady=7)
+                          selected=active,font=(font,11),pady=10)
         last_wide=i==len(modes)-1 and len(modes)%2==1
         button.grid(row=i//2,column=i%2,columnspan=2 if last_wide else 1,sticky='ew',padx=(0,6) if i%2==0 and not last_wide else (0,0),pady=3)
         buttons.columnconfigure(i%2,weight=1)
@@ -222,6 +224,47 @@ def build_ui(self, modes):
     scrollbar.pack(side='right',fill='y')
     self.log.config(yscrollcommand=scrollbar.set)
     self.log.pack(fill='both',expand=True)
+
+    def adapt_layout(event):
+        if event.widget is not self.root:
+            return
+        width=event.width
+        compact=width<1000
+        side_width=max(300,min(380,int(width*.28)))
+        if compact:
+            header.configure(height=72)
+            self.belt.configure(font=(font,18,'bold'))
+            self.gate_status.configure(font=(font,18,'bold'))
+            self.hint.configure(pady=7)
+            body.pack_configure(pady=(10,0))
+            sidebar.pack_propagate(False)
+            sidebar.configure(height=160)
+            body.columnconfigure(1,minsize=0)
+            left.grid_configure(row=0,column=0,columnspan=2,padx=0,pady=(0,10))
+            sidebar.grid_configure(row=1,column=0,columnspan=2)
+            body.rowconfigure(0,weight=1);body.rowconfigure(1,weight=0)
+            guide.pack_forget()
+            preview_width=width-80
+        else:
+            header.configure(height=92)
+            self.belt.configure(font=(font,25,'bold'))
+            self.gate_status.configure(font=(font,25,'bold'))
+            self.hint.configure(pady=15)
+            body.pack_configure(pady=(18,0))
+            sidebar.pack_propagate(True)
+            body.columnconfigure(1,minsize=side_width)
+            left.grid_configure(row=0,column=0,columnspan=1,padx=(0,14),pady=0)
+            sidebar.grid_configure(row=0,column=1,columnspan=1)
+            body.rowconfigure(0,weight=1);body.rowconfigure(1,weight=0)
+            guide.pack(fill='x')
+            preview_width=width-side_width-100
+        canvas.configure(width=side_width)
+        self.camera_info.configure(wraplength=max(200,preview_width))
+        self.hint.configure(wraplength=max(200,preview_width))
+        for label in guide_labels:
+            label.configure(wraplength=max(130,(width-130)//3))
+        self.command_status.configure(wraplength=max(250,width-100))
+    self.root.bind('<Configure>',adapt_layout,add='+')
 
 
 def render_packet(self,packet):

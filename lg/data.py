@@ -29,7 +29,8 @@ def save_snapshot(path, hands, label, operator, session, physical_hand, side='bo
         raise ValueError('Invalid label')
     h = selected[0]
     row = dict(operator=operator,session=session,label=label,physical_hand=physical_hand,
-               side='left' if h.points[0,0] < .5 else 'right',time=time.time(),
+               side='left' if h.points[0,0] < .5 else 'right',
+               detected_hand=h.handedness.lower() if h.handedness else None,time=time.time(),
                points=h.points.tolist(),features=features(h.points).tolist(),capture=capture)
     path = Path(path)
     path.parent.mkdir(parents=True,exist_ok=True)

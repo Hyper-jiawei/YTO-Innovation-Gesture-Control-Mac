@@ -2,11 +2,13 @@
   <img src="docs/assets/YTO.png" alt="圆通速递 YTO" width="132">
 </p>
 
-<h1 align="center">双手，就是操作台</h1>
+<h1 align="center">基于 AI 视觉的操作工隔空手勢操作系統</h1>
 
-<p align="center"><b>YTO 创新大赛 · 手势隔空操作工作站</b></p>
+<p align="center"><b>双手，就是操作台</b> · YTO 创新大赛 · 手势隔空操作工作站</p>
 <p align="center">面向物流操作中心的视觉交互工作站：不放下快件，也能完成指令、识别与取证。</p>
 <p align="center">圆通速递 · 营运板块 · AI 视觉 · 提质增效</p>
+
+<p align="center"><b>项目联系人：</b>白佳伟　|　电话 <b>18521241020</b>　|　邮箱 <a href="mailto:ibjw18@gmail.com">ibjw18@gmail.com</a>　|　<a href="https://github.com/Hyper-jiawei">GitHub 主页</a>　|　<a href="https://hyper-jiawei.github.io/gallery/">Gallery 作品集</a></p>
 
 <p align="center">
   <img alt="YTO Express" src="https://img.shields.io/badge/YTO-营运板块-6544A5?style=flat-square">

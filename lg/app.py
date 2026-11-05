@@ -246,7 +246,7 @@ class App:
 
 def main(default_mode='scan'):
     parser=argparse.ArgumentParser(description='YTO手势隔空操作系统：统一启动，无后台服务')
-    parser.add_argument('--camera',default='0' if sys.platform == 'darwin' else '1',help='设备编号或本地视频路径（macOS 默认 0）；auto 自动尝试 0–3')
+    parser.add_argument('--camera',default='1',help='设备编号或本地视频路径（默认 1，外接相机）；auto 自动尝试 0–3')
     parser.add_argument('--camera-width',type=int,default=1280 if sys.platform == 'darwin' else 1920,help='请求摄像头宽度；实际值显示于界面')
     parser.add_argument('--camera-height',type=int,default=720 if sys.platform == 'darwin' else 1080,help='请求摄像头高度；不支持时使用相机实际能力')
     parser.add_argument('--demo',action='store_true',help='明确标识的离线合成输入')

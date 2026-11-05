@@ -45,6 +45,7 @@ class Hand:
     digit: object
     box: tuple
     track_id: int = -1
+    handedness: str | None = None
 
 
 class Tracker:

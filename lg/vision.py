@@ -109,10 +109,15 @@ class Hands:
         self.ts = max(self.ts+1, int(time.monotonic()*1000))
         result = self.recognizer.recognize_for_video(image,self.ts)
         hands = []
-        for landmarks in result.hand_landmarks:
+        for index, landmarks in enumerate(result.hand_landmarks):
             p = np.array([(l.x,l.y,l.z) for l in landmarks],dtype=np.float32)
             box = (*p[:,:2].min(0), *p[:,:2].max(0))
-            hands.append(Hand(p,self.classifier.predict(p) if self.classifier else None,box))
+            # MediaPipe labels assume selfie-mirrored input; capture frames here
+            # are unmirrored. Store the operator's anatomical hand, not screen order.
+            categories = result.handedness[index]
+            predicted = categories[0].category_name if categories else None
+            side = {'Left': 'Right', 'Right': 'Left'}.get(predicted)
+            hands.append(Hand(p,self.classifier.predict(p) if self.classifier else None,box,handedness=side))
         return self.tracker.update(hands)
 
     def close(self):
@@ -169,11 +174,14 @@ def draw(frame, hands, roi=None, progress=0, dwell_seconds=1.1):
     h,w = out.shape[:2]
     for index,hand in enumerate(hands):
         pts = (hand.points[:,:2]*[w,h]).astype(int)
-        color = (220,190,30) if index == 0 else (50,170,255)
+        # OpenCV uses BGR. Unknown-side legacy/demo inputs use a stable fallback.
+        is_left = hand.handedness == 'Left' if hand.handedness else index == 0
+        color = (255,0,0) if is_left else (0,255,0)
+        node_color = (0,255,0) if is_left else (255,0,0)
         for a,b in CONNECTIONS:
-            cv2.line(out,tuple(pts[a]),tuple(pts[b]),color,2)
+            cv2.line(out,tuple(pts[a]),tuple(pts[b]),color,4,cv2.LINE_AA)
         for i,p in enumerate(pts):
-            cv2.circle(out,tuple(p),6 if i==8 else 3,color,-1)
+            cv2.circle(out,tuple(p),7 if i==8 else 4,node_color,-1,cv2.LINE_AA)
         label='9 FIST' if hand.digit==FIST_DIGIT else (hand.digit if hand.digit is not None else '?')
         cv2.putText(out,f'ID {hand.track_id} / {label}',
                     tuple(pts[0]),cv2.FONT_HERSHEY_SIMPLEX,.7,color,2)

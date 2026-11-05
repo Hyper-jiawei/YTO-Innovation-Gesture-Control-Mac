@@ -26,7 +26,7 @@ def observations(digits=(1,1)):
         p[8,:2] = [x,y]
         p[0,:2] = [x,y+.15]
         box = (*p[:,:2].min(0),*p[:,:2].max(0))
-        hands.append(Hand(p,digits[i],box,i))
+        hands.append(Hand(p,digits[i],box,i,handedness='Left' if i == 0 else 'Right'))
     return hands
 
 

@@ -124,7 +124,27 @@ class Hands:
         self.recognizer.close()
 
 
+@lru_cache(maxsize=1)
+def action4_camera_index():
+    """Match AVFoundation device names; never fall back to a phone camera."""
+    import json
+    import subprocess
+    root = Path(__file__).resolve().parents[1]
+    helper = root / '.tools/bin/yto-cameras'
+    command = [str(helper)] if helper.is_file() else ['/usr/bin/swift', str(root/'macos/list_cameras.swift')]
+    devices = json.loads(subprocess.check_output(command, text=True))
+    matches = [d for d in devices if 'action4' in d['name'].lower().replace(' ', '')]
+    if len(matches) != 1:
+        names = ', '.join(d['name'] for d in devices) or '无'
+        raise RuntimeError(f'无法唯一定位 OsmoAction4；当前设备：{names}。请确认 Action 4 已进入 USB 摄像头模式。')
+    device = matches[0]
+    print(f"CAMERA_SELECTED name={device['name']} index={device['index']}", flush=True)
+    return int(device['index'])
+
+
 def open_camera(source,width=1920,height=1080):
+    if source == 'action4':
+        source = action4_camera_index()
     if str(source).isdigit():
         candidates = [int(source)]
     elif source == 'auto':
@@ -156,7 +176,7 @@ def prepare_camera(source, width=1280, height=720):
     granted authorization state when the worker opens its own capture session.
     Local video files and other platforms need no permission preflight.
     """
-    if sys.platform == 'darwin' and (str(source).isdigit() or source == 'auto'):
+    if sys.platform == 'darwin' and (str(source).isdigit() or source in ('auto', 'action4')):
         cap, _, _ = open_camera(source, width, height)
         cap.release()
 

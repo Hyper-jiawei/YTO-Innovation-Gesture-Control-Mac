@@ -319,7 +319,7 @@ xcode-select --install      # 首次安装需要 Command Line Tools
 ./start.command
 ```
 
-也可在访达双击 `YTO手势控制.app` 或 `start.command` 启动；双击 `demo.command` 查看合成输入演示。首次启动请在系统相机权限提示中选择允许。默认摄像头为 1（外接 Osmo Action 4，1280×720）；内置相机可用 `--camera 0`，也可用 `--camera auto` 自动查找。骨架按实际左右手绘制：左手蓝线绿节点，右手绿线蓝节点，连线为4像素。
+也可在访达双击 `YTO手势控制.app` 或 `start.command` 启动；双击 `demo.command` 查看合成输入演示。首次启动请在系统相机权限提示中选择允许。默认按设备名称锁定 OsmoAction4（1280×720），不依赖易变化的相机编号；内置相机可用 `--camera 0`，也可用 `--camera auto` 自动查找。骨架按实际左右手绘制：左手蓝线绿节点，右手绿线蓝节点，连线为4像素。
 
 ```zsh
 ./demo.command                       # 离线合成演示

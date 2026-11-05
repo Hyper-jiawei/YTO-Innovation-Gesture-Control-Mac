@@ -13,7 +13,7 @@ def main():
     parser=argparse.ArgumentParser(description='YTO 手势按钮采集工具')
     parser.add_argument('--operator',default='p01')
     parser.add_argument('--session',default=None)
-    parser.add_argument('--camera',default='1')
+    parser.add_argument('--camera',default='action4' if sys.platform == 'darwin' else '1')
     parser.add_argument('--label',default='1',choices=LABELS)
     parser.add_argument('--hand',choices=['left','right'])
     parser.add_argument('--side',choices=['left','right','both'],default='both')

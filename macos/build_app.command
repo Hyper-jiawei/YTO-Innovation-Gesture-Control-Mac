@@ -7,3 +7,6 @@ cp macos/Info.plist "$APP/Contents/Info.plist"
 swiftc macos/Launcher.swift -o "$APP/Contents/MacOS/yto-launcher" -framework AppKit -framework AVFoundation
 codesign --force --sign - "$APP"
 echo "已构建：$PWD/$APP"
+
+mkdir -p .tools/bin
+swiftc macos/list_cameras.swift -o .tools/bin/yto-cameras -framework AVFoundation

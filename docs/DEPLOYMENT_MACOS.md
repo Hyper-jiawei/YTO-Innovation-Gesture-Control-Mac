@@ -30,7 +30,7 @@ YTO_DEVICE=cpu ./start.command       # 强制CPU
 ./demo.command
 ```
 
-默认相机1（外接Action 4）、请求分辨率1280×720；相机实际输出受硬件能力影响。请只开一个实时实例，首次模型预热可能需要十余秒。关闭窗口即可退出。应用启动日志 `outputs/app-launch.log` 每次启动覆盖，照片、报告和事件记录位于 `outputs/`，采集数据位于 `data/`。
+默认按名称锁定OsmoAction4（`--camera action4`）、请求分辨率1280×720；相机实际输出受硬件能力影响。请只开一个实时实例，首次模型预热可能需要十余秒。关闭窗口即可退出。应用启动日志 `outputs/app-launch.log` 每次启动覆盖，照片、报告和事件记录位于 `outputs/`，采集数据位于 `data/`。
 
 ## 开发与采集
 

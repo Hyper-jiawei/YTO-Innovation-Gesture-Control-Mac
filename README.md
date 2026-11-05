@@ -20,9 +20,71 @@
 
 > <strong>当前交付状态：</strong>已完成摄像头实时交互、手背手势模型、五类业务演示、图片与日志留存。传送带和格口采用本地模拟控制，尚未接入 PLC、分拣控制系统和企业上报接口；YOLO 当前识别物品类别，破损由操作员发现并发起取证。手势控制不承担硬件安全急停功能。
 
-<strong>快速导航：</strong>[背景与痛点](#背景与痛点) · [场景与演示](#场景与演示) · [AI技术与训练](#ai技术与训练) · [可行性](#可行性) · [价值评估](#价值评估) · [部署](#快速开始) · [扩展路线](#扩展能力与推广路线)
+<strong>快速导航：</strong>[灵感来源](#灵感来源) · [背景与痛点](#背景与痛点) · [场景与演示](#场景与演示) · [AI技术与训练](#ai技术与训练) · [可行性](#可行性) · [价值评估](#价值评估) · [部署](#快速开始) · [扩展路线](#扩展能力与推广路线)
+
+## 灵感来源
+
+项目的起点是<strong>手动供件台上的连续作业</strong>：操作人员双手搬运、拆包和整理快件，指令输入却仍依赖固定按键、扫码枪与手机。设备本身可用，但在双手被占用、目标位置变化或发现异常时，“找到设备、放下快件、切换操作”会打断作业。
+
+另一条灵感来自 <strong>Apple Vision Pro 的手势交互思路</strong>：用自然的手部动作表达操作意图，通过可见反馈确认结果。本项目把这一思路应用到物流工位，以固定摄像头感知手势，用双指框选表达“我要操作哪一件”，用明确的双手组合表达启停与格口选择。当前使用普通摄像头和桌面程序，无需佩戴头显。
+
+![图5：Apple Vision Pro 手势交互参考](docs/assets/scenes/vision-pro-gesture.png)
+
+*图5｜Apple Vision Pro 手势交互参考图，用于说明项目交互灵感。*
+
+[![手动供件台现场视频预览，点击播放MP4](docs/assets/videos/manual-feeding.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/manual-feeding.mp4)
+
+[▶ 播放手动供件台现场视频（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/manual-feeding.mp4)
+
+从现场动作出发，项目希望把<strong>发现问题 → 指定目标 → 拍照、识别与扫码 → 留存处理记录</strong>放在同一个工位内完成，减少拿取设备和等待切换的时间。
 
 ## 背景与痛点
+
+### 危险情况：减少寻找停止按键的动作
+
+传送带运行时，如果出现人员站上传送带等危险情况，固定位置的物理急停按键可能不在操作人员伸手可及的位置。现场提出的需求是：<strong>发现危险后，能够就地用明确手势发出停止请求，减少跑动和寻找按键的动作</strong>，为尽快处置异常提供补充入口。
+
+![图1：人员站上传送带的现场风险](docs/assets/scenes/conveyor-risk.png)
+
+*图1｜人员站上传送带的现场情况：停止入口的触达距离是本项目关注的作业问题。*
+
+[![传送带现场风险视频预览，点击播放MP4](docs/assets/videos/conveyor-risk.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/conveyor-risk.mp4)
+
+[▶ 播放传送带现场风险视频（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/conveyor-risk.mp4)
+
+当前演示采用“双手握拳保持1秒 → 软件提交停止指令 → 界面确认”的规则，实际端到端停机时间尚未测量，也尚未接入PLC。现场手势停机的落地需完成设备联调、执行反馈与安全验证；原有物理急停和安全互锁继续保留，不能用本原型替代。这里的价值方向是缩短触达操作入口的时间，不把演示描述为已验证的安全急停系统。
+
+### 大包搬运：发现异形件后就地框选取证
+
+搬运大包时发现异形件、外露物或需要复核的快件，传统流程往往需要暂时放下快件，再寻找扫码枪或手机、调整设备并拍照。项目希望让操作人员在摄像头覆盖范围内，用双食指指定目标区域，<strong>就地框选、拍照并留存异常信息</strong>，减少寻找设备和等待交接的时间。
+
+![图2：大包搬运中发现异形件](docs/assets/scenes/irregular-parcel.png)
+
+*图2｜双手搬运中发现异形件，取证与信息记录会与搬运动作发生切换。*
+
+当前“目标拍照”已能保存所选区域并显示最近照片，扫码可在同一工作站切换完成；异常业务分类及企业上报接口需在接入业务系统时补充。节省时长以工位实测为准。
+
+### 破损上报：把拆包、拍照、描述与面单识别串起来
+
+破损件处理通常包含：双手拆包 → 取出破损物品 → 拿手机拍照 → 手动填写物品信息与异常描述 → 上报破损信息 → 贴好面单 → 再用手机扫描面单。照片、物品描述和单号分散在多个操作中，操作人员需要反复腾手、拿放设备和切换页面。
+
+| 图3｜拆包并取出需要记录的物品 | 图4｜整理物品、贴单并关联面单 |
+|---|---|
+| ![图3：拆包取出物品](docs/assets/scenes/parcel-unpacking.png) | ![图4：整理物品与面单](docs/assets/scenes/parcel-waybill.png) |
+
+两张现场图片的原文件名为“无着件上报1/2”，展示拆包、整理和面单操作；在此用于说明破损、无着等异常件处理中共通的取证步骤，不据此判断图中物品存在破损。
+
+本项目围绕这一流程，把<strong>框选拍照、物品自动识别、异常记录与框选扫码</strong>集中到同一工作站。完整业务目标是在此基础上增加<strong>AI总结上报</strong>：自动整理物品类别、证据图片、单号与异常描述，供操作人员核对后提交。
+
+| 环节 | 原有操作 | 系统整合方向与当前进度 |
+|---|---|---|
+| 取出破损物品 | 拆包后腾手寻找手机 | 在摄像头范围内直接指定目标，当前支持双指框选 |
+| 拍照取证 | 拿起手机、对准并拍照 | 当前支持区域拍照、检测框标注与本地留存 |
+| 物品信息 | 手动输入物品名称与描述 | 当前YOLO识别通用物品类别；AI总结与异常描述生成待接入 |
+| 关联面单 | 贴单后再次拿手机扫码 | 当前可切换到单号识别模式，对指定面单区域解码 |
+| 上报处理 | 汇总多处信息后提交 | 当前生成本地JSON报告；企业上报及完整流程关联待接入 |
+
+预期价值是减少拍照、描述和扫码之间的重复切换，缩短破损上报的操作链路。当前破损由操作员发现并发起取证，模型识别的是物品类别；自动破损判定和AI总结仍需后续接入。正式节省时间与差错改善需要通过现场前后对照验证。
 
 项目从营运作业中的动作切换和信息断点入手，以下痛点作为工位试点的观察与验证方向。
 
@@ -38,9 +100,9 @@
 
 ## 场景与演示
 
-下列五个动图均为本项目实机演示，按图1—图5展示。界面持续迭代，动图中的部分按钮或文字可能与当前版本存在差异；操作规则以本文说明和代码为准。
+下列五项功能演示全部使用MP4，点击预览图或“播放MP4”链接进入视频文件页观看。现场参考视频与功能演示分开展示；视频预览图均为对应视频的真实截帧，图1—图5为用户提供的场景与灵感参考图。功能视频来自原Windows开发环境，展示共用业务流程，Mac环境安装及验证说明见下文；界面与操作规则以当前代码为准。
 
-### 图1｜破损识别与异常上报取证
+### 演示1｜破损识别与异常上报取证
 
 <strong>场景：</strong>在异常件处理台发现破损包装、散落物品或需要复核的内件时，操作员双指框定目标，系统识别所选物品并保存证据，形成待处理报告。
 
@@ -49,9 +111,11 @@
 - 目标框显示类别与置信度，保存带标注的取证照片及 JSON 报告；移开手指后隐藏临时识别结果。
 - 该流程实现的是<strong>操作员发起异常 → 目标识别 → 拍照取证 → 本地报告</strong>，企业系统上传和专用破损检测模型为后续接入内容。
 
-![图1：破损识别与异常件取证演示](docs/assets/damage-report.gif)
+[![破损识别与异常件取证视频预览，点击播放MP4](docs/assets/videos/damage-report.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/damage-report.mp4)
 
-### 图2｜快件拍照取证
+[▶ 播放破损识别与异常件取证（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/damage-report.mp4)
+
+### 演示2｜快件拍照取证
 
 <strong>场景：</strong>快件外包装、封口、面单或内件需要记录时，无需拿起独立拍照终端，通过双指即可指定拍摄范围。
 
@@ -59,9 +123,11 @@
 - 可结合目标检测优化所选物体边界，减少背景干扰。
 - <strong>右侧保留最新照片缩略图</strong>，手指离开后仍可核对，下一次拍照自动更新；原图在本地保存。
 
-![图2：快件区域拍照与证据预览](docs/assets/photo-evidence.gif)
+[![快件区域拍照与证据预览视频预览，点击播放MP4](docs/assets/videos/photo-evidence.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/photo-evidence.mp4)
 
-### 图3｜手势控制传送带
+[▶ 播放快件区域拍照与证据预览（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/photo-evidence.mp4)
+
+### 演示3｜手势控制传送带
 
 <strong>场景：</strong>操作人员在摄像头覆盖的工作区，用明确的双手组合提交启停指令，并直接确认执行结果。
 
@@ -73,9 +139,11 @@
 
 双手在两次 OK 之间保持入镜并松开手指。单次 OK 持续不动只算一次，不会启动。各模式共享启停逻辑；顶部显示的是本地模拟执行状态。
 
-![图3：双手握拳停止与双次OK启动演示](docs/assets/gesture-control.gif)
+[![双手握拳停止与双次OK启动视频预览，点击播放MP4](docs/assets/videos/gesture-control.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/gesture-control.mp4)
 
-### 图4｜摆臂格口绑定
+[▶ 播放双手握拳停止与双次OK启动（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/gesture-control.mp4)
+
+### 演示4｜摆臂格口绑定
 
 <strong>场景：</strong>在摆臂分拣工位切换目标格口时，用双手数字完成绑定，并通过醒目结果减少工位确认成本。
 
@@ -84,9 +152,11 @@
 - 顶部以<strong>大字高亮显示“已绑定：X号格口”</strong>，绑定结果可跨程序重启恢复。
 - 当前为本地逻辑绑定，后续可对接工位、摆臂及分拣控制服务，增加设备反馈校验。
 
-![图4：双手数字绑定摆臂格口](docs/assets/gate-binding.gif)
+[![双手数字绑定摆臂格口视频预览，点击播放MP4](docs/assets/videos/gate-binding.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/gate-binding.mp4)
 
-### 图5｜单号独立识别
+[▶ 播放双手数字绑定摆臂格口（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/gate-binding.mp4)
+
+### 演示5｜单号独立识别
 
 <strong>场景：</strong>同一桌面存在多个快件或多个标签时，操作员通过框选明确需要识别的条码，便于复核和单件操作。
 
@@ -95,7 +165,9 @@
 - 扫码结果与区域缩略图在右侧显示，同一条码去重计数，失败时保留诊断信息。
 - 本模块读取条码内容，不等同于通过 OCR 读取所有面单文字。
 
-![图5：指定区域单号独立识别](docs/assets/barcode-scan.gif)
+[![指定区域单号独立识别视频预览，点击播放MP4](docs/assets/videos/barcode-scan.jpg)](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/barcode-scan.mp4)
+
+[▶ 播放指定区域单号独立识别（MP4）](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac/blob/main/docs/assets/videos/barcode-scan.mp4)
 
 ## AI技术与训练
 
@@ -201,7 +273,7 @@ flowchart LR
 
 本仓库为 [Windows 原版](https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control) 的 Mac Apple Silicon 适配版本，项目功能、模型、五类演示与业务规则保持一致。推荐 macOS 14 及以上、Apple M1、8 GB 或以上内存、Python 3.11 和可用摄像头。MediaPipe关键点使用CPU，PyTorch手势分类及YOLO使用验证可用的Metal/MPS；无可用加速设备时回退CPU。
 
-仓库包含当前手势权重、MediaPipe任务文件与YOLO12n权重，原始照片、关键点样本、业务日志和本地依赖不公开上传。
+仓库包含当前手势权重、MediaPipe任务文件与YOLO12n权重，原始训练照片、关键点样本、业务日志和本地依赖不公开上传；README所用场景图和现场、演示视频存放在 `docs/assets/scenes/` 与 `docs/assets/videos/`。
 
 ```zsh
 git clone https://github.com/Hyper-jiawei/YTO-Innovation-Gesture-Control-Mac.git
@@ -249,7 +321,8 @@ train_digits.py             手势分类器训练
 train_detector.py          自有目标检测数据训练入口
 models/                    当前推理模型及手势映射
 examples/barcodes/         可用于扫码演示的随机条码PNG
-docs/assets/               五个演示GIF和YTO标识
+docs/assets/               YTO标识
+docs/assets/videos/        现场参考与五项功能MP4、视频预览图
 tests/                     自动化验证
 ```
 

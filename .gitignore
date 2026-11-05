@@ -41,3 +41,6 @@ AGENTS.md
 *.app/
 MACOS_启动说明.md
 !docs/DEPLOYMENT_MACOS.md
+
+# User-supplied source media; published copies live under docs/assets/
+examples/video/

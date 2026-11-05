@@ -74,3 +74,5 @@ MediaPipe 0.10.21安装包内部WHEEL标签标为x86_64，依赖检查器也会�
 ```
 
 以上为运行验证，不是跨人员手势准确率结论。原README中的RTX5060性能及分类准确率属于原Windows开发环境。当前传送带与格口为本地模拟，未接入PLC与企业上报接口；“破损件上报”仍为操作员发起取证和物品类别检测。
+
+相机索引必须与OpenCV AVFoundation后端一致：合并video与muxed设备，按uniqueID排序后再按名称匹配OsmoAction4。系统原始枚举顺序不等于OpenCV编号。

@@ -15,6 +15,28 @@ BORDER='#e7e8f0'
 FONT = 'PingFang SC' if sys.platform == 'darwin' else 'Microsoft YaHei UI'
 
 
+def mode_colors(selected):
+    return dict(bg=ACCENT if selected else '#ffffff',
+                fg='#ffffff' if selected else '#000000',
+                highlightbackground='#000000' if selected else ACCENT,
+                highlightcolor='#000000' if selected else ACCENT)
+
+
+class ModeButton(tk.Label):
+    """Explicit colors on macOS, where native buttons can ignore backgrounds."""
+    def __init__(self, parent, command, selected=False, **kwargs):
+        super().__init__(parent, takefocus=1, highlightthickness=2, bd=0,
+                         cursor='hand2', **mode_colors(selected), **kwargs)
+        self.command = command
+        self.bind('<Button-1>', lambda event: self.invoke())
+        self.bind('<Return>', lambda event: self.invoke())
+        self.bind('<space>', lambda event: self.invoke())
+
+    def invoke(self):
+        self.focus_set()
+        return self.command()
+
+
 def build_ui(self, modes):
     font=FONT
     style=ttk.Style(self.root)
@@ -131,14 +153,11 @@ def build_ui(self, modes):
         self.commands.put(('mode',modes[name]))
         for label,button in self.mode_buttons.items():
             active=label==name
-            button.config(bg=ACCENT if active else '#f5f5fa',fg='white' if active else MUTED,
-                          activebackground='#6236c4' if active else '#eeebf6')
+            button.config(**mode_colors(active))
     for i,name in enumerate(modes):
         active=self.mode_var.get()==name
-        button=tk.Button(buttons,text=name,command=lambda n=name:select_mode(n),
-                         bg=ACCENT if active else '#f5f5fa',fg='white' if active else MUTED,
-                         activebackground='#6236c4',activeforeground='white',font=(font,10),
-                         relief='flat',bd=0,cursor='hand2',pady=7)
+        button=ModeButton(buttons,text=name,command=lambda n=name:select_mode(n),
+                          selected=active,font=(font,10),pady=7)
         last_wide=i==len(modes)-1 and len(modes)%2==1
         button.grid(row=i//2,column=i%2,columnspan=2 if last_wide else 1,sticky='ew',padx=(0,6) if i%2==0 and not last_wide else (0,0),pady=3)
         buttons.columnconfigure(i%2,weight=1)

@@ -2,7 +2,7 @@
   <img src="docs/assets/YTO.png" alt="圆通速递 YTO" width="132">
 </p>
 
-<h1 align="center">基于 AI 视觉的操作工隔空手勢操作系統</h1>
+<h1 align="center">基于 AI 视觉的操作工隔空手势操作系统</h1>
 
 <p align="center"><b>双手，就是操作台</b> · YTO 创新大赛 · 手势隔空操作工作站</p>
 <p align="center">面向物流操作中心的视觉交互工作站：不放下快件，也能完成指令、识别与取证。</p>
@@ -18,18 +18,18 @@
   <img alt="Demos" src="https://img.shields.io/badge/实机演示-5%20类业务闭环-6544A5?style=flat-square">
 </p>
 
-<p align="center"><b>参与成员：</b>白佳伟 · 孟万通 · 马丽媛 · 张冰玉</p>
+<p align="center"><b>参与成员：</b>白佳伟 · 张冰玉 · 孟万通 · 马丽媛</p>
 
 ### 致谢：团队成员与分工
 
 感谢团队成员为项目的付出：
 
-| 成员 | 项目分工 |
-|---|---|
-| **白佳伟** | 方案提出者，视觉 DEMO 全流程开发部署，多设备适配，项目仓库维护，网站维护 |
-| **张冰玉** | 提供手势 PLC 控制器方案、手势上报拦截件方案，并配合项目 DEMO 进行整合 |
-| **孟万通** | 手势数据集采集与 PyTorch MLP 分类器验证、Ultralytics YOLO 模型验证 |
-| **马丽媛** | 项目方案制定与技术文档呈现，图文、编辑 |
+| 成员 | 部门 | 项目分工 |
+|---|---|---|
+| **白佳伟** | 智能中台研发部-智能产品组 | 方案提出者，视觉 DEMO 全流程开发部署，多设备适配，项目仓库维护，网站维护 |
+| **张冰玉** | 技术平台部-技术平台产品组 | 提供手势 PLC 控制器方案、手势上报拦截件方案，并配合项目 DEMO 进行整合 |
+| **孟万通** | 智能中台研发部-数据中台开发组 | 手势数据集采集与 PyTorch MLP 分类器验证、Ultralytics YOLO 模型验证 |
+| **马丽媛** | 智能中台研发部-智能产品组 | 项目方案制定与技术文档呈现，图文、编辑 |
 
 <p align="center">
   <a href="#30-秒速览"><b>30 秒速览</b></a> ·
@@ -55,7 +55,7 @@
 | 扫码 · 拍照 · 取证 · 启停 · 格口 | **98.85%**（257/260） | **96.54%** / 接受样本 99.20% | **约 20.2 ms**（中位数，Apple M1 MPS） | 实时交互 + 五类演示 + 本地留存 |
 | 双指框选 + 双手数字 + 时序动作 | 同一采集批次时间分段留出 | 阈值过滤后的可用性 | 不含采集与界面刷新 | 含 3 类扩展场景；设备联动与企业接口待接入 |
 
-<p align="center"><sub>演示动图为页面内嵌、自动循环，无需点击。</sub></p>
+<p align="center">演示动图为页面内嵌、自动循环，无需点击。</p>
 
 ## 目录
 
@@ -84,7 +84,7 @@
 
 ![传送带现场风险：自动循环演示](docs/assets/animations/conveyor-risk.webp)
 
-<p align="center"><sub>双手握拳保持 1 秒 → 软件提交停止指令 → 界面确认；端到端停机时间尚未测量，尚未接入 PLC。</sub></p>
+<p align="center">双手握拳保持 1 秒 → 软件提交停止指令 → 界面确认；端到端停机时间尚未测量，尚未接入 PLC。</p>
 
 ### 大包搬运：发现异形件就地取证
 
@@ -120,7 +120,7 @@
 
 ![手动供件台现场：自动循环演示](docs/assets/animations/manual-feeding.webp)
 
-<p align="center"><sub>手动供件台现场：双手搬运、拆包与整理时，指令输入仍依赖固定按键、扫码枪与手机。</sub></p>
+<p align="center">手动供件台现场：双手搬运、拆包与整理时，指令输入仍依赖固定按键、扫码枪与手机。</p>
 
 ---
 
@@ -204,7 +204,7 @@
 - 地面面单存在弯折、遮挡和反光，框选可以先把解码范围收窄到目标面单；机位角度与补光需按现场调整。
 - 本模块读取条码内容，不等同于通过 OCR 读取所有面单文字。
 
-![指定区域单号独立识别：无声自动循环演示](docs/assets/animations/barcode-scan.webp)
+![指定区域单号独立识别：自动循环演示](docs/assets/animations/barcode-scan.webp)
 
 <p align="center"><a href="https://hyper-jiawei.github.io/YTO-Innovation-Gesture-Control-Mac/assets/videos/barcode-scan.mp4"><b>▶ 查看高清视频（MP4）</b></a></p>
 
@@ -339,7 +339,7 @@ YTO_DEVICE=cpu ./start.command       # 强制 CPU 推理
 ./.venv/bin/python check_environment.py
 ```
 
-Mac 适配包括 AVFoundation 相机后端、主线程权限请求、Metal 设备选择、苹方中文字体与原生启动器；MacBook Air M1（8 GB、macOS 15.7.9）已通过 79 项自动化测试、模型加载及内置相机实时显示验证。详细说明见 [Mac 部署指南](docs/DEPLOYMENT_MACOS.md)；Windows/CUDA 安装见[原部署指南](docs/DEPLOYMENT.md)。
+Mac 适配包括 AVFoundation 相机后端、主线程权限请求、Metal 设备选择、苹方中文字体与原生启动器；MacBook Air M1（8 GB、macOS 15.7.9）已通过 86 项自动化测试、模型加载及内置相机实时显示验证。详细说明见 [Mac 部署指南](docs/DEPLOYMENT_MACOS.md)；Windows/CUDA 安装见[原部署指南](docs/DEPLOYMENT.md)。
 
 ### 工程结构与独立演示
 
@@ -357,7 +357,7 @@ lg/business.py             本地控制状态、证据和日志
 lg/actions.py              时间序列动作规则与录制
 lg/app.py / lg/ui.py       后台编排与桌面界面
 models/                    当前推理模型及手势映射
-docs/assets/animations/    原速自动循环的无声动图
+docs/assets/animations/    原速自动循环的动图
 docs/assets/videos/        高清 MP4 及预览图
 tests/                     自动化验证
 ```
@@ -378,7 +378,7 @@ tests/                     自动化验证
 
 ## 08 团队与参考
 
-**参与成员：白佳伟、孟万通、马丽媛、张冰玉。** 具体分工见[文首致谢](#致谢团队成员与分工)。
+**参与成员：白佳伟、张冰玉、孟万通、马丽媛。** 具体分工见[文首致谢](#致谢团队成员与分工)。
 
 项目定位为圆通速递营运板块的一线创新实践，聚焦「减少动作切换、提高操作连贯性、让识别与取证形成闭环」。场景图与演示素材由项目方提供；YTO 标识权利归相应权利人。第三方代码和模型许可说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
@@ -388,6 +388,6 @@ tests/                     自动化验证
 - [Ultralytics YOLOv8](https://docs.ultralytics.com/models/yolov8/)：目标检测实现与模型
 - [PyTorch](https://pytorch.org/) 及 [ZXing-C++](https://github.com/zxing-cpp/zxing-cpp)：分类训练、GPU 推理与条码解码
 
-<p align="center"><sub>本页动图经压缩以适配 GitHub 内嵌加载；高清版本见各演示下方 MP4 入口。</sub></p>
+<p align="center">本页动图经压缩以适配 GitHub 内嵌加载；高清版本见各演示下方 MP4 入口。</p>
 
 相机优先顺序为 Action 4 → 手机连续互通相机 → 内置/其他可用相机；界面显示实际使用的设备名称。左右手以当前识别映射统一显示，左手蓝线绿节点，右手绿线蓝节点。

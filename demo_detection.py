@@ -1,4 +1,4 @@
-"""Independently inspect YOLO12 on a selected image region, without camera/UI."""
+"""Independently inspect YOLOv8 on a selected image region, without camera/UI."""
 import bootstrap
 import argparse,json
 from pathlib import Path
@@ -9,7 +9,7 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('--image',type=Path,required=True)
     parser.add_argument('--roi',type=float,nargs=4,default=[0,0,1,1],metavar=('X1','Y1','X2','Y2'))
-    parser.add_argument('--model',type=Path,default=bootstrap.ROOT/'models/yolo12n.pt')
+    parser.add_argument('--model',type=Path,default=bootstrap.ROOT/'models/yolov8n.pt')
     args=parser.parse_args()
     a,b,c,d=args.roi
     if not (0<=a<c<=1 and 0<=b<d<=1): parser.error('ROI must satisfy 0<=x1<x2<=1 and 0<=y1<y2<=1')

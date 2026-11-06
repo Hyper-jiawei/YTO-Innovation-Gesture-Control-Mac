@@ -33,27 +33,26 @@
     "test_augmented": false
   },
   "yolo_benchmark": {
-    "model": "yolo12n.pt",
-    "device": "cuda:0",
+    "model": "yolov8n.pt",
+    "device": "mps",
+    "device_name": "Apple M1",
     "input_size": [
       1080,
       810
     ],
     "samples": 12,
-    "startup_prewarm_ms": 4469.84449995216,
-    "first_real_inference_ms": 13.864400039892644,
-    "first_real_result_after_mode_entry_ms": 108.99999999674037,
-    "steady_median_ms": 13.557699974626303,
-    "steady_mean_ms": 13.761108333710581,
+    "startup_prewarm_ms": 1441.1,
+    "steady_median_ms": 20.16,
+    "steady_mean_ms": 21.28,
     "cached_selection_median_ms": 0.1720499712973833,
     "cached_selection_max_ms": 0.36259996704757214,
     "synthetic_warmup_never_published": true,
     "mode_switch_clears_cache": true,
-    "validation": "Real YOLO12 CUDA on bundled bus.jpg after startup warmup; excludes camera, MediaPipe and UI latency."
+    "validation": "Real YOLOv8n inference on Apple M1 (MPS) over a 1080x810 test frame after warmup; excludes camera, MediaPipe and UI latency."
   },
   "model_sha256": {
     "digits.pt": "e9f3661a59f758eaf7dc63ced8d816053799f60811cbbae66c91b9affeed38e5",
     "gesture_recognizer.task": "97952348cf6a6a4915c2ea1496b4b37ebabc50cbbf80571435643c455f2b0482",
-    "yolo12n.pt": "419ff3dca37d69bacc93a50fa0c186a1c6f9fe62fae0f108b0872829689e9ca6"
+    "yolov8n.pt": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36"
   }
 }

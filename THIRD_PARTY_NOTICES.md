@@ -5,7 +5,7 @@
 | 项目/资产 | 使用方式 | 来源与许可 |
 |---|---|---|
 | MediaPipe | 手部定位与21点关键点；models/gesture_recognizer.task任务文件 | [Google AI Edge](https://github.com/google-ai-edge/mediapipe)，[模型文档](https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer)，Apache-2.0；许可副本见licenses/mediapipe.txt |
-| Ultralytics / YOLO12n | 目标检测接口、models/yolo12n.pt通用模型 | [Ultralytics](https://github.com/ultralytics/ultralytics)，[YOLO12文档](https://docs.ultralytics.com/models/yolo12/)，AGPL-3.0/官方企业授权方案；随附AGPL许可文本见licenses/ultralytics.txt |
+| Ultralytics / YOLOv8n | 目标检测接口、models/yolov8n.pt通用模型 | [Ultralytics](https://github.com/ultralytics/ultralytics)，[YOLOv8文档](https://docs.ultralytics.com/models/yolov8/)，AGPL-3.0/官方企业授权方案；随附AGPL许可文本见licenses/ultralytics.txt |
 | PyTorch / torchvision | MLP训练、GPU推理 | [PyTorch](https://github.com/pytorch/pytorch)，[torchvision](https://github.com/pytorch/vision)，各依赖遵循其上游许可 |
 | ZXing-C++ | 一维与二维条码解码 | [zxing-cpp](https://github.com/zxing-cpp/zxing-cpp)，Apache-2.0 |
 | handpose_x | 手姿与数据处理思路参考 | [Hyper-jiawei/handpose_x](https://github.com/Hyper-jiawei/handpose_x)，MIT，副本见licenses/handpose_x.txt |

@@ -24,7 +24,7 @@ python main.py --camera 1
 |---|---|
 | models/digits.pt | 自采手背数据训练的11类MLP |
 | models/gesture_recognizer.task | MediaPipe手部定位与关键点任务包；项目不采用其内置手势类别作为自定义分类结果 |
-| models/yolo12n.pt | 通用YOLO12n目标检测 |
+| models/yolov8n.pt | 通用YOLOv8n目标检测 |
 | models/gesture_labels.json | 当前标签含义及控制映射 |
 
 模型SHA256与评估摘要见 `docs/validation_metrics.json`。模型文件加载仅使用可信来源；外部权重应自行核验来源与格式。

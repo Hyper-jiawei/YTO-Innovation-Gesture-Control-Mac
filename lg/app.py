@@ -259,7 +259,7 @@ def main(default_mode='scan'):
     parser.add_argument('--no-yolo',action='store_true',help='禁用自动加载的通用检测模型')
     parser.add_argument('--smoke',type=float,default=0,help='UI 冒烟验证秒数后关闭')
     args=parser.parse_args()
-    bundled = Path(__file__).resolve().parents[1]/'models/yolo12n.pt'
+    bundled = Path(__file__).resolve().parents[1]/'models/yolov8n.pt'
     if args.no_yolo:
         args.yolo = None
     elif not args.yolo and not args.demo and bundled.exists():

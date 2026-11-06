@@ -60,4 +60,4 @@ python train_digits.py --data data/my_dorsal/digits.jsonl --split temporal --epo
 
 动作识别模块可采集2秒单手完整序列，经质检后重采样为20帧，追加到 `data/actions.jsonl`。必须包含展开→捏合/握拳→展开的时间变化，静态照片不能代替动作序列。现版本动作识别是规则状态机，LSTM/TCN是后续方向。
 
-若要自动识别包装破损，需另外采集有代表性的正常/异常照片，人工标注目标框或分割区域，划分独立测试集，并通过 `train_detector.py --help` 使用自有数据训练。当前通用YOLO12输出物体类别，不承担自动判损。
+若要自动识别包装破损，需另外采集有代表性的正常/异常照片，人工标注目标框或分割区域，划分独立测试集，并通过 `train_detector.py --help` 使用自有数据训练。当前通用YOLOv8输出物体类别，不承担自动判损。

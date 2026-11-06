@@ -14,7 +14,7 @@
   <img alt="YTO Express" src="https://img.shields.io/badge/YTO-营运板块-6544A5?style=flat-square">
   <img alt="Apple Silicon" src="https://img.shields.io/badge/Apple%20Silicon-M1%20已验证-4A2F82?style=flat-square">
   <img alt="Gesture accuracy" src="https://img.shields.io/badge/手势测试-98.85%25-2F7D4F?style=flat-square">
-  <img alt="YOLO12n" src="https://img.shields.io/badge/YOLO12n-13.56ms-B8860B?style=flat-square">
+  <img alt="YOLOv8n" src="https://img.shields.io/badge/YOLOv8n-20.2ms-B8860B?style=flat-square">
   <img alt="Demos" src="https://img.shields.io/badge/实机演示-5%20类业务闭环-6544A5?style=flat-square">
 </p>
 
@@ -39,9 +39,9 @@
 
 ## 30 秒速览
 
-| 五类业务闭环 | 手势分类测试正确率 | 阈值 0.85 接受覆盖率 | YOLO12n 单帧推理 | 交付状态 |
+| 五类业务闭环 | 手势分类测试正确率 | 阈值 0.85 接受覆盖率 | YOLOv8n 单帧推理 | 交付状态 |
 |:---:|:---:|:---:|:---:|:---:|
-| 扫码 · 拍照 · 取证 · 启停 · 格口 | **98.85%**（257/260） | **96.54%** / 接受样本 99.20% | **约 13.56 ms**（中位数） | 实时交互 + 五类演示 + 本地留存 |
+| 扫码 · 拍照 · 取证 · 启停 · 格口 | **98.85%**（257/260） | **96.54%** / 接受样本 99.20% | **约 20.2 ms**（中位数，Apple M1 MPS） | 实时交互 + 五类演示 + 本地留存 |
 | 双指框选 + 双手数字 + 时序动作 | 同一采集批次时间分段留出 | 阈值过滤后的可用性 | 不含采集与界面刷新 | 含 3 类扩展场景；设备联动与企业接口待接入 |
 
 <p align="center"><sub>演示动图为页面内嵌、自动循环，无需点击。</sub></p>
@@ -123,7 +123,7 @@
 
 **场景：**发现破损包装、散落物品或需要复核的内件时，双指框定目标，系统识别所选物品并保存证据，形成待处理报告。
 
-- 进入破损件上报模式后，YOLO12 在后台持续处理最新画面，提前准备识别结果。
+- 进入破损件上报模式后，YOLOv8 在后台持续处理最新画面，提前准备识别结果。
 - 双食指指向目标对角，稳定约 **1.1 秒**后锁定；有效缓存可立即显示目标类别，如 `book`、`apple`。
 - 目标框显示类别与置信度，保存带标注的取证照片及 JSON 报告；移开手指后隐藏临时识别结果。
 - 当前实现的是**操作员发起异常 → 目标识别 → 拍照取证 → 本地报告**；企业系统上传与专用破损检测模型为后续接入内容。
@@ -219,7 +219,7 @@ flowchart LR
     E --> F
     F --> G[区域框选与业务意图]
     G --> H[ZXing条码解码]
-    G --> I[YOLO12目标检测]
+    G --> I[YOLOv8目标检测]
     G --> J[传送带指令与格口绑定]
     H --> K[预览、照片、JSON与事件日志]
     I --> K
@@ -233,7 +233,7 @@ flowchart LR
 | 左右手处理 | 左右手分开采集标记、共享分类模型 | 覆盖手背方向差异，避免只适配单手 |
 | 稳定选择 | IoU 关联、指尖二维坐标、位置容差、停留状态机 | 容忍轻微抖动，减少瞬间动作误触发 |
 | 时序判断 | 连续握拳计时、双次 OK 状态机；展开→捏合/握拳→展开动作模块 | 区分单帧姿态与有起止的动作 |
-| 物品识别 | Ultralytics YOLO12n，Mac Metal/MPS、Windows CUDA 推理 | 对框选物体给出类别、置信度和边界框 |
+| 物品识别 | Ultralytics YOLOv8n，Mac Metal/MPS 推理 | 对框选物体给出类别、置信度和边界框 |
 | 条码解码 | ZXing、多种预处理与有限多帧重试 | 提高指定区域条码的读取机会 |
 | 工作站交互 | Tkinter、摄像头线程、最新帧队列与检测缓存 | 统一界面，减少后台任务阻塞预览 |
 
@@ -257,8 +257,8 @@ flowchart LR
 | 训练增强 | 每个训练样本新增 4 份，含原样本共 3,875 份 |
 | 分类测试正确率 | 257 / 260，**98.85%** |
 | 阈值 0.85 时接受覆盖率 / 接受样本正确率 | **96.54%** / **99.20%** |
-| 测试硬件 | Windows、RTX 5060；分类及 YOLO 使用 CUDA，MediaPipe 关键点使用 CPU |
-| YOLO12n 预热后推理 | 单张测试图 12 次测量中位数约 **13.56 ms**，非端到端现场时延 |
+| 测试硬件 | 手势分类：Windows、RTX 5060（CUDA）；YOLOv8n 时延：Apple M1（MPS）；MediaPipe 关键点使用 CPU |
+| YOLOv8n 预热后推理 | 1080×810 测试帧 12 次测量中位数约 **20.16 ms**（Apple M1 MPS），非端到端现场时延 |
 
 > 分类结果来自**同一采集批次内的时间分段留出测试**，不能当作跨人员、跨中心或正式生产准确率。YOLO 计时不包含相机采集、MediaPipe 和界面刷新。模型摘要见[公开验证记录](docs/VALIDATION.md)。
 
@@ -374,7 +374,7 @@ tests/                     自动化验证
 - [fukuuy/gestures-recog](https://github.com/fukuuy/gestures-recog)：关键点手势识别、数据采集与动态序列处理思路
 - [Hyper-jiawei/handpose_x](https://github.com/Hyper-jiawei/handpose_x)：手部姿态及数据处理参考
 - [Google AI Edge MediaPipe](https://github.com/google-ai-edge/mediapipe) 及[官方示例](https://github.com/google-ai-edge/mediapipe-samples)：手部关键点与任务接口
-- [Ultralytics YOLO12](https://docs.ultralytics.com/models/yolo12/)：目标检测实现与模型
+- [Ultralytics YOLOv8](https://docs.ultralytics.com/models/yolov8/)：目标检测实现与模型
 - [PyTorch](https://pytorch.org/) 及 [ZXing-C++](https://github.com/zxing-cpp/zxing-cpp)：分类训练、GPU 推理与条码解码
 
 <p align="center"><sub>本页动图经压缩以适配 GitHub 内嵌加载；高清版本见各演示下方 MP4 入口。</sub></p>

@@ -156,7 +156,7 @@ class DatasetDetectionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(dir=bootstrap.ROOT/'outputs') as folder:
             station=Station(folder)
             image,_=crop(annotated,(.2,.25,.8,.75))
-            station.evidence(image,'damage',(.2,.25,.8,.75),'yolo12n.pt',result)
+            station.evidence(image,'damage',(.2,.25,.8,.75),'yolov8n.pt',result)
             report=json.loads(next(station.folder.glob('report_*.json')).read_text(encoding='utf-8'))
             self.assertEqual(report['detections'],result)
             self.assertEqual(report['bbox_coordinates'],'normalized_full_frame')
@@ -187,7 +187,7 @@ class AppFlowTests(unittest.TestCase):
         from lg.app import App
         with tempfile.TemporaryDirectory(dir=bootstrap.ROOT/'outputs') as folder:
             station=Station(bootstrap.ROOT,folder)
-            detector=MagicMock(device='cpu',model_name='yolo12n.pt')
+            detector=MagicMock(device='cpu',model_name='yolov8n.pt')
             detector.detect_region.return_value=[dict(label='book',class_id=73,confidence=.91,bbox=[.35,.3,.6,.6])]
             with patch('lg.app.Station',return_value=station),patch('lg.app.Detector',return_value=detector):
                 app=App(self.args('damage'))

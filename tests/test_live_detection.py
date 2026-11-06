@@ -21,7 +21,7 @@ def wait_for(predicate,timeout=2):
 
 
 class FakeDetector:
-    model_name='yolo12n.pt';device='cpu';model=object()
+    model_name='yolov8n.pt';device='cpu';model=object()
     def __init__(self): self.calls=[]
     def detect_region(self,frame,roi):
         self.calls.append((int(frame[0,0,0]),tuple(roi),time.monotonic()))

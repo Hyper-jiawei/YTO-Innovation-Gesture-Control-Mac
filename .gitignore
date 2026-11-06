@@ -26,7 +26,7 @@ docs/*
 models/*
 !models/digits.pt
 !models/gesture_recognizer.task
-!models/yolo12n.pt
+!models/yolov8n.pt
 !models/gesture_labels.json
 # Machine-specific agent routing stays local
 AGENTS.md
